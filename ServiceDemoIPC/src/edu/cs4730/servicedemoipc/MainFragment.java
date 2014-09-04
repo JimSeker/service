@@ -88,8 +88,10 @@ public class MainFragment extends Fragment {
             mBound = true;
         }
 
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
+        public void onServiceDisconnected(ComponentName className) {
+            // This is called when the connection with the service has been
+            // unexpectedly disconnected -- that is, its process crashed.
+            mService = null;
             mBound = false;
         }
     };
