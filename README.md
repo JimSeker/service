@@ -1,5 +1,6 @@
 Service Examples
 ===========
+eclipse/ has the examples in eclipse project format, no longer updated.  Otherwise the examples are for android studio.
 
 ServiceDemo is a example of how to call Services, both IntentService and a Service.  plus an example of the download service too.
 
