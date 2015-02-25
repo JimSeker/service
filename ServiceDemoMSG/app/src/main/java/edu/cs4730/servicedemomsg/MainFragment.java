@@ -18,7 +18,7 @@ import android.view.View.OnClickListener;
 
 /**
  * This is a very simple example of a service and Ibinder (IPC)
- * when the user clicks the button, it retrieves a random number from the service.
+ * when the user clicks the button, it triggers the service to say hi via a toast.
  * 
  * http://developer.android.com/guide/components/bound-services.html
  * http://developer.android.com/reference/android/app/Service.html
@@ -60,7 +60,7 @@ public class MainFragment extends Fragment {
 		// Inflate the layout for this fragment
 		View myView = inflater.inflate(R.layout.fragment_main, container, false);
 
-		//setup the button, so it will call into the service and get a random number.
+		//setup the button, so it will call into the service via cause the service to react and say hi.
 		myView.findViewById(R.id.btn_gn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {

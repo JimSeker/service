@@ -25,20 +25,22 @@ public class MainFragment extends Fragment {
 	/*
 	 * The service will call the handler to send back information.
 	 */
-	private Handler handler = new Handler() {
-		public void handleMessage(Message message) {
-			Object path = message.obj;
+	private Handler handler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+			Object path = msg.obj;
 			Toast.makeText(getActivity().getBaseContext(), path.toString(), Toast.LENGTH_LONG).show();
+            return true;
 		};
-	};
+	});
 	
 	public MainFragment() {
 		// Required empty public constructor
 	}
 
-	public MainFragment(Handler h) {
+	/*public MainFragment(Handler h) {
 		handler = h;
-	}
+	}*/
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,7 +49,7 @@ public class MainFragment extends Fragment {
 		View myView = inflater.inflate(R.layout.fragment_main, container, false);
 		
 		
-		//IntentSerive start with 5 random number toasts
+		//IntentService start with 5 random number toasts
 		myView.findViewById(R.id.btn_istarth).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -59,7 +61,7 @@ public class MainFragment extends Fragment {
 			}
 		});
 
-		//IntentSerive stop.  If already stopped, what happens?
+		//IntentService stop.  If already stopped, what happens?
 		myView.findViewById(R.id.btn_istartn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -68,7 +70,7 @@ public class MainFragment extends Fragment {
 				getActivity().startService(number5);
 			}
 		});
-		//IntentSerive start with 5 random number toasts
+		//IntentService start with 5 random number toasts
 		myView.findViewById(R.id.btn_sstarth).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -102,7 +104,7 @@ public class MainFragment extends Fragment {
 					
 					file =  "pic.jpg";
 				} catch (MalformedURLException e) {
-					// TODO Auto-generated catch block
+
 					e.printStackTrace();
 				}
 				

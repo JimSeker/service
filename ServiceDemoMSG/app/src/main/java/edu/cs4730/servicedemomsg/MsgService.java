@@ -28,7 +28,7 @@ public class MsgService extends Service {
     class IncomingHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
-        	Log.v("MsgService", "Message recieved");
+        	Log.v("MsgService", "Message received");
             switch (msg.what) {
                 case MSG_SAY_HELLO:
                     Toast.makeText(getApplicationContext(), "hello!", Toast.LENGTH_SHORT).show();
