@@ -65,7 +65,7 @@ public class myIntentService extends IntentService {
 		for (i=0; i<times; i++ ) {
 			synchronized (this) {
 				try {
-					wait(5000);
+					wait(5000);  //wait 5 seconds.
 				} catch (InterruptedException e) {
 				}
 			}

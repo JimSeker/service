@@ -98,9 +98,9 @@ public class MainFragment extends Fragment {
 				URL url = null;
 				String file = "";
 				try {
-					url = new URL ("http://www.cs.uwyo.edu/~seker/courses/4730/example/pic.jpg");
+					//url = new URL ("http://www.cs.uwyo.edu/~seker/courses/4730/example/pic.jpg");
 					//for a bigger file: http://www.nasa.gov/images/content/206402main_jsc2007e113280_hires.jpg
-					//url = new URL ("http://www.nasa.gov/images/content/206402main_jsc2007e113280_hires.jpg");
+					url = new URL ("http://www.nasa.gov/images/content/206402main_jsc2007e113280_hires.jpg");
 					
 					file =  "pic.jpg";
 				} catch (MalformedURLException e) {
