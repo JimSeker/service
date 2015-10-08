@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.ByteBuffer;
 import org.apache.http.util.ByteArrayBuffer;
 import android.app.IntentService;
 import android.app.Notification;
