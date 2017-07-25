@@ -69,7 +69,7 @@ public class myIntentService extends IntentService {
 				} catch (InterruptedException e) {
 				}
 			}
-			String info= i+ "random "+r.nextInt(100);
+			String info= i+ " random "+r.nextInt(100);
 			Log.d("intentServer", info);
 			if (messenger != null) {
 				Message msg = Message.obtain();
