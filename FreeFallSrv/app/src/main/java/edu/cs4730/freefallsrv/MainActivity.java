@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         //if we don't stopService it will continue even after the activity has.
         //in this case, the phone will continue to scream even after the activity is gone.
         //uncomment line below, if you want to be sure, otherwise, for this example, I want to
-        //be able to leave the serivce running.
+        //be able to leave the service running.
 
         //stopService(new Intent(this,MySensorService.class));
         super.onStop();
