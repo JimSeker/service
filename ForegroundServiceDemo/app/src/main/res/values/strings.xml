@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ForegroundServiceDemo</string>
+    <string name="channel_name">Test Channel 1</string>
+    <string name="channel_description">This is a test channel at level a high level, where lights, sound, and vibration are active.</string>
+</resources>
