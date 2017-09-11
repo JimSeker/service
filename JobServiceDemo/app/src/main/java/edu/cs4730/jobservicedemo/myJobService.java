@@ -42,13 +42,17 @@ public class myJobService extends JobService {
         Log.wtf(TAG, "max is " + max);
 
         // Process work here...  we'll pretend by sleeping for 3 seconds.
- /*       try {
+        try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
         }
-*/
+
         Toast.makeText(getApplicationContext(), "Job: number is " + mGenerator.nextInt(max), Toast.LENGTH_SHORT).show();
         Log.i(TAG, "Job: I'm working on something...");
+
+        //since there seems to be threshold on recurring.  say 10 to 30 minutes, based on simple tests.
+        //you could just reschedule the job here.  Then the time frame can be much shorter.
+        //scheduleJob(getApplicationContext(),max, true);
 
         // Return true as there's more work to be done with this job.
         return true;
