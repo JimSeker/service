@@ -14,6 +14,8 @@ The code based on the freefall code in the sensor repo.
 <b>JobIntentServiceDemo</b> is an example of a jobIntentService.  The jobIntentService just toasts a number of random numbers as asked for.
   this JobIntentServices can run in the background without an app in Oreo+
 
+<b>JobServiceDemo</b> is an example of a jobService.  The jobIntentService just toasts a number of random numbers as asked for.
+  
 <b>ForegroundServiceDemo</b> is an example of how to create a foreground service which can run without an app.  It needs a presistent notification
 and to be started in the foreground.  This required in Oreo+, otherwise use a JobIntentService.
   
