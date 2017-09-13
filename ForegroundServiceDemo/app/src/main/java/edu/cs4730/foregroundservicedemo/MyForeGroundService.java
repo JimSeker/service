@@ -67,7 +67,9 @@ public class MyForeGroundService extends Service {
                 String info = i + " random " + r.nextInt(100);
                 Log.d("intentServer", info);
                 //make a toast
-                Toast.makeText(MyForeGroundService.this, info, Toast.LENGTH_SHORT).show();
+                //unable to ensure the toasts will always show, so use a handler and post it for later.
+               // Toast.makeText(MyForeGroundService.this, info, Toast.LENGTH_SHORT).show();
+                toast(info);
             }
             // Stop the service using the startId, so that we don't stop
             // the service in the middle of handling another job
@@ -75,6 +77,17 @@ public class MyForeGroundService extends Service {
         }
     }
 
+    final Handler mHandler = new Handler();
+
+    // Helper for showing tests
+    void toast(final CharSequence text) {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(MyForeGroundService.this, text, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
     @Override
     public void onCreate() {
