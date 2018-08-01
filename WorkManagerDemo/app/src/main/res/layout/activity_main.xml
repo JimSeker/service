@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/btn_oneshot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="One Shot run."/>
+
+    <TextView
+        android:id="@+id/tv_oneshot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OneShot Status:  Not started."/>
+
+    <Button
+        android:id="@+id/btn_param"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Parameter Worker"/>
+
+    <TextView
+        android:id="@+id/tv_param"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="result:  Not started."/>
+</LinearLayout>
