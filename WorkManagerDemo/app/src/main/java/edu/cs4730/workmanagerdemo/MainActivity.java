@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.concurrent.TimeUnit;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
@@ -15,20 +18,26 @@ import androidx.work.WorkStatus;
 
 
 /*
- * need a simple worker, parameter worker.  Then chain them together for the last example.  maybe a parallel 
+ * need a simple worker, parameter worker.  Then chain them together for the last example.  maybe a parallel
  */
 
 public class MainActivity extends AppCompatActivity {
 
     TextView tv_oneshot, tv_param;
+    TextView tv_chaina, tv_chainb, tv_chainc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //textviews for the buttons to show what is going on.
         tv_oneshot = findViewById(R.id.tv_oneshot);
         tv_param = findViewById(R.id.tv_param);
+        tv_chaina = findViewById(R.id.tv_chaina);
+        tv_chainb = findViewById(R.id.tv_chainb);
+        tv_chainc = findViewById(R.id.tv_chainc);
 
+        //set the click listeners for the three buttons.
         findViewById(R.id.btn_oneshot).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -42,13 +51,47 @@ public class MainActivity extends AppCompatActivity {
                 param();
             }
         });
+
+        findViewById(R.id.btn_chain).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                chain();
+            }
+        });
+
     }
 
 
+    /*
+     *  This will create a oneshot workerA task and schedule it to run once.
+     *  commented out code shows how to make it recur every 24 hours.
+     */
     public void oneshot() {
+        //for a schedule once
         OneTimeWorkRequest runWorkA = new OneTimeWorkRequest.Builder(WorkerA.class)
             .build();
+
+        /*
+        //for recur schedule, say every 24 hours, comment out above, since duplicate variables.
+        PeriodicWorkRequest.Builder workerkBuilder =
+            new PeriodicWorkRequest.Builder(WorkerA.class, 24,  TimeUnit.HOURS);
+        // ...if you want, you can apply constraints to the builder here...
+        Constraints myConstraints = new Constraints.Builder()
+            //.setRequiresDeviceIdle(true)
+            .setRequiresCharging(true)
+            // Many other constraints are available, see the
+            // Constraints.Builder reference
+            .build();
+
+       // Create the actual work object:
+        PeriodicWorkRequest runWorkA = workerkBuilder.setConstraints(myConstraints)
+        .build();
+       */
+
+        //now enqueue the task so it can be run.
         WorkManager.getInstance().enqueue(runWorkA);
+
+        //not necessary, but this will tell us the status of the task.
         LiveData<WorkStatus> status = WorkManager.getInstance().getStatusById(runWorkA.getId());
         status.observe(this, new Observer<WorkStatus>() {
             @Override
@@ -80,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //This shows how to set input and receive a result for a worker task.
     public void param() {
         // Create the Data object:
         final Data myData = new Data.Builder()
@@ -106,5 +150,110 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             });
+    }
+
+    //This method changes together WorkerA and B in parallel and then C.
+    public void chain() {
+        //first setup the requests
+        OneTimeWorkRequest runWorkA = new OneTimeWorkRequest.Builder(WorkerA.class).build();
+        OneTimeWorkRequest runWorkB = new OneTimeWorkRequest.Builder(WorkerB.class).build();
+        OneTimeWorkRequest runWorkC = new OneTimeWorkRequest.Builder(WorkerC.class).build();
+        //now setup them up to run, A and B together.  Once they are complete then launch C.
+        WorkManager.getInstance()
+            // First, run all the A tasks (in parallel):
+            .beginWith(runWorkA, runWorkB)
+            // ...when all A tasks are finished, run the single B task:
+            .then(runWorkC)
+            .enqueue();
+
+
+        // not necessary, but so the display updates get the LiveData for each and set to update the textviews.
+
+        LiveData<WorkStatus> status = WorkManager.getInstance().getStatusById(runWorkA.getId());
+        status.observe(this, new Observer<WorkStatus>() {
+            @Override
+            public void onChanged(@Nullable WorkStatus workStatus) {
+                switch (workStatus.getState()) {
+                    case BLOCKED:
+                        tv_chaina.setText("A Status is Blcoked");
+                        break;
+                    case CANCELLED:
+                        tv_chaina.setText("A Status is canceled");
+                        break;
+                    case ENQUEUED:
+                        tv_chaina.setText("A Status is enqueued");
+                        break;
+                    case FAILED:
+                        tv_chaina.setText("A Status is failed");
+                        break;
+                    case RUNNING:
+                        tv_chaina.setText("A Status is running");
+                        break;
+                    case SUCCEEDED:
+                        tv_chaina.setText("A Status is succeeded");
+                        break;
+                    default:
+                        tv_chaina.setText("A Status is unknown");
+                }
+            }
+        });
+
+        LiveData<WorkStatus> statusb = WorkManager.getInstance().getStatusById(runWorkB.getId());
+        statusb.observe(this, new Observer<WorkStatus>() {
+            @Override
+            public void onChanged(@Nullable WorkStatus workStatus) {
+                switch (workStatus.getState()) {
+                    case BLOCKED:
+                        tv_chainb.setText("B Status is Blcoked");
+                        break;
+                    case CANCELLED:
+                        tv_chainb.setText("B Status is canceled");
+                        break;
+                    case ENQUEUED:
+                        tv_chainb.setText("B Status is enqueued");
+                        break;
+                    case FAILED:
+                        tv_chainb.setText("B Status is failed");
+                        break;
+                    case RUNNING:
+                        tv_chainb.setText("B Status is running");
+                        break;
+                    case SUCCEEDED:
+                        tv_chainb.setText("B Status is succeeded");
+                        break;
+                    default:
+                        tv_chainb.setText("B Status is unknown");
+                }
+            }
+        });
+
+        LiveData<WorkStatus> statusc = WorkManager.getInstance().getStatusById(runWorkC.getId());
+        statusc.observe(this, new Observer<WorkStatus>() {
+            @Override
+            public void onChanged(@Nullable WorkStatus workStatus) {
+                switch (workStatus.getState()) {
+                    case BLOCKED:
+                        tv_chainc.setText("C Status is Blcoked");
+                        break;
+                    case CANCELLED:
+                        tv_chainc.setText("C Status is canceled");
+                        break;
+                    case ENQUEUED:
+                        tv_chainc.setText("C Status is enqueued");
+                        break;
+                    case FAILED:
+                        tv_chainc.setText("C Status is failed");
+                        break;
+                    case RUNNING:
+                        tv_chainc.setText("C Status is running");
+                        break;
+                    case SUCCEEDED:
+                        tv_chainc.setText("C Status is succeeded");
+                        break;
+                    default:
+                        tv_chainc.setText("C Status is unknown");
+                }
+            }
+        });
     }
 }
