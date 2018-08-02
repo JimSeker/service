@@ -20,8 +20,12 @@ The code based on the freefall code in the sensor repo.
 <b>JobServiceDemo</b> is an example of a jobService.  The jobIntentService just toasts a number of random numbers as asked for.
 Shows how to schedule a one off (with a recurring if you want) and a recurring one that survives reboot as well.
 
-<b>JobServiceJobWorkItemDemo</b> is JobService, but instead of schedulding, it uses the new enqueue and dequeue methods.  
+<b>JobServiceJobWorkItemDemo</b> is JobService, but instead of scheduling, it uses the new enqueue and dequeue methods.  
 Note: This is a API 26/Oreo+ example.
+
+<b>WorkManagerDemo</b> is an example of how to use the new Architecture Worker Tasks for background tasks.  This examples show a simple one, one with parameters,
+and a set of tasks chained together.  The tasks don't actually do anything interesting.   This should work on API 19+ (but must be compiled with API 28).
+When the worker library is moved the androidx, I'll change the example to use androidx support libraries. 
 
 These are example code for University of Wyoming, Cosc 4730 Mobile Programming course.
 All examples are for Android.
