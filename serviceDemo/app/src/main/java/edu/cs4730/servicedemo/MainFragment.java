@@ -10,8 +10,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,8 +51,8 @@ public class MainFragment extends Fragment {
 
         // Inflate the layout for this fragment
         View myView = inflater.inflate(R.layout.fragment_main, container, false);
-        //logger for the premission checking for the filedown service.
-        logger = (TextView) myView.findViewById(R.id.logger);
+        //logger for the permission checking for the file download service.
+        logger = myView.findViewById(R.id.logger);
 
         //IntentService start with 5 random number toasts
         myView.findViewById(R.id.btn_istarth).setOnClickListener(new OnClickListener() {
@@ -66,7 +66,7 @@ public class MainFragment extends Fragment {
             }
         });
 
-        //IntentService stop.  If already stopped, what happens?
+        //IntentService starts and creates 5 notifications with random numbers.
         myView.findViewById(R.id.btn_istartn).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,7 +75,7 @@ public class MainFragment extends Fragment {
                 getActivity().startService(number5);
             }
         });
-        //IntentService start with 5 random number toasts
+        //Service start with 5 random number toasts
         myView.findViewById(R.id.btn_sstarth).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,7 +87,7 @@ public class MainFragment extends Fragment {
             }
         });
 
-        //
+        //Service start with 5 random number and sends notifications.
         myView.findViewById(R.id.btn_sstartn).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {

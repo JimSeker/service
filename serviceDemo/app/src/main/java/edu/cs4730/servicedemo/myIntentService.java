@@ -11,7 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.Messenger;
-import android.support.v4.app.NotificationCompat;
+import androidx.core.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -87,7 +87,7 @@ public class myIntentService extends IntentService {
 	}
 	public void makenoti(String message) {
 
-		Notification noti = new NotificationCompat.Builder(getApplicationContext())
+		Notification noti = new NotificationCompat.Builder(getApplicationContext(), MainActivity.id)
 		.setSmallIcon(R.drawable.ic_launcher)
 		.setWhen(System.currentTimeMillis())  //When the event occurred, now, since noti are stored by time.
 		
