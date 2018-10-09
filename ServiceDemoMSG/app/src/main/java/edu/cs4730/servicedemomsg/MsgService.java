@@ -9,17 +9,18 @@ import android.os.Messenger;
 import android.util.Log;
 import android.widget.Toast;
 
-
-/*
+/**
  * A simple service that receives message via a handler from the binder.
  * based on http://developer.android.com/guide/components/bound-services.html
  */
 
 public class MsgService extends Service {
-	public MsgService() {
-	}
+    public MsgService() {
+    }
 
-    /** Command to the service to display a message */
+    /**
+     * Command to the service to display a message
+     */
     static final int MSG_SAY_HELLO = 1;
 
     /**
@@ -28,7 +29,7 @@ public class MsgService extends Service {
     class IncomingHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
-        	Log.v("MsgService", "Message received");
+            Log.v("MsgService", "Message received");
             switch (msg.what) {
                 case MSG_SAY_HELLO:
                     Toast.makeText(getApplicationContext(), "hello!", Toast.LENGTH_SHORT).show();

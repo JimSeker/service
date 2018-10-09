@@ -1,7 +1,7 @@
 package edu.cs4730.servicedemomsg;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 //Nothing to see here, go to the MainFragment.
 

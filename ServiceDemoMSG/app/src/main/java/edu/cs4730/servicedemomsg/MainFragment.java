@@ -9,12 +9,13 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+
+import androidx.fragment.app.Fragment;
 
 /**
  * This is a very simple example of a service and Ibinder (IPC)
