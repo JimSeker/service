@@ -10,7 +10,7 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.Process;
 import android.os.Message;
-import android.support.v4.app.NotificationCompat;
+import androidx.core.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -112,8 +112,13 @@ public class MyForeGroundService extends Service {
         // start ID so we know which request we're stopping when we finish the job
         Message msg = mServiceHandler.obtainMessage();
         msg.arg1 = startId;//needed for stop.
-        msg.setData(intent.getExtras());
-        mServiceHandler.sendMessage(msg);
+
+        if (intent != null) {
+            msg.setData(intent.getExtras());
+            mServiceHandler.sendMessage(msg);
+        } else {
+            Toast.makeText(MyForeGroundService.this, "The Intent to start is null?!", Toast.LENGTH_SHORT).show();
+        }
 
         // If we get killed, after returning from here, restart
         return START_STICKY;
