@@ -1,9 +1,9 @@
 package edu.cs4730.servicedemoipc;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
-/*
+/**
  * Move along, nothing to see here.
  * Go the MainFragment to see the code for service and IPC.
  */
@@ -19,6 +19,4 @@ public class MainActivity extends AppCompatActivity {
 			.add(R.id.container, new MainFragment()).commit();
 		}
 	}
-
-
 }
