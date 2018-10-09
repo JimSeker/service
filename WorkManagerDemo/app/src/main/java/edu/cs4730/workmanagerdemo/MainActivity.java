@@ -19,6 +19,9 @@ import androidx.work.WorkStatus;
 
 /*
  * need a simple worker, parameter worker.  Then chain them together for the last example.  maybe a parallel
+ *
+ * As of Oct 9, 2018, this can't converted to androidx yet.
+ * see https://developer.android.com/topic/libraries/architecture/adding-components
  */
 
 public class MainActivity extends AppCompatActivity {
