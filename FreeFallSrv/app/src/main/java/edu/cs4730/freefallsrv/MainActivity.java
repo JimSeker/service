@@ -2,13 +2,17 @@ package edu.cs4730.freefallsrv;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-/*
+/**
  *  This is a simple demo of starting a service based on the freefall code from the sensor repo
  *  This code only starts a service.
+ *
+ *
+ *  With the new background restrictions in API 27+, this app doesn't work very well anymore.
+ *  On the upside, services can't just eat the battery anymore.
  */
 
 public class MainActivity extends AppCompatActivity {
@@ -21,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         startService(new Intent(this, MySensorService.class));
-        myButton = (Button)findViewById(R.id.button);
+        myButton = findViewById(R.id.button);
         myButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -36,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
 
     }
     @Override

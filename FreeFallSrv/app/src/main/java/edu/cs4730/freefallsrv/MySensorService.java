@@ -13,7 +13,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 
-/*
+/**
  *  A "simple" service to capture sensor events and determine if the device is in free fall.
  *  It should play a sound, but at the moment, it is just a toast.
  *
