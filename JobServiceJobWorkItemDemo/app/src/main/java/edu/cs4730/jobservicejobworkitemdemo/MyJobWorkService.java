@@ -12,7 +12,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-/*
+/**
  * This is basically a google example (except like most google examples it didn't work) with
  * all the necessary corrections to work correctly.  The org code comes from:
  * https://developer.android.com/reference/android/app/job/JobParameters.html#dequeueWork()

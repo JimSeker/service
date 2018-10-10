@@ -3,7 +3,9 @@ package edu.cs4730.jobintentservicedemo;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
-import android.support.v4.app.JobIntentService;
+
+import androidx.core.app.JobIntentService;
+
 import android.util.Log;
 import android.widget.Toast;
 
@@ -40,8 +42,8 @@ public class MyJobIntentService extends JobIntentService {
 
         for (int i = 0; i < top; i++) {
             num = mGenerator.nextInt(100);
-            toast("Random number is " + num);
-            Log.wtf(TAG, "Random number is " + num);
+            toast(i+ " Random number is " + num);
+            Log.wtf(TAG, i + " Random number is " + num);
             try {
                 Thread.sleep(10000);  // 1000 is one second, ten seconds would be 10000
             } catch (InterruptedException e) {

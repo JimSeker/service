@@ -3,7 +3,9 @@ package edu.cs4730.jobintentservicedemo;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+
+import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +13,7 @@ import android.widget.EditText;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * All this fragment does is take in a number and start up the jobIntent service to complete the work.
  */
 public class MainFragment extends Fragment {
 
@@ -33,12 +35,11 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getContext(), MyJobIntentService.class);  //is any of that needed?  idk.
-                  //note, putExtra remembers type and I need this to be an integer.  so get an integer first.
+                //note, putExtra remembers type and I need this to be an integer.  so get an integer first.
                 i.putExtra("times", Integer.parseInt(et_input.getText().toString()));  //should do error checking here!
-                MyJobIntentService.enqueueWork(getContext(),i);
+                MyJobIntentService.enqueueWork(getContext(), i);
             }
         });
         return myView;
     }
-
 }
