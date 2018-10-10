@@ -8,11 +8,12 @@ eclipse/ has the examples in eclipse project format, no longer updated.  Otherwi
 
 <b>ServiceDemoMSG</b> is a simple example of passing a messages from the service to the activity via a handler.
 
-<b>ForegroundServiceDemo</b> is an example of how to create a foreground service which can run without an app.  It needs a presistent notification
-and to be started in the foreground.  This required in 26/Oreo+, otherwise use a JobIntentService.
+<b>ForegroundServiceDemo</b> is an example of how to create a foreground service which can run without an app.  It needs a persistent notification
+and to be started in the foreground.  This is required in 26/Oreo+, otherwise use a JobIntentService.
 
 <b>FreeFallSrv</b> is an example of using a service to get sensor data and do things.  The activity only starts and stops the service.
-The code based on the freefall code in the sensor repo.
+The code based on the freefall code in the sensor repo.  Note with the background restrictions started in API 27, this app doesn't work as well as 
+it used too.  Likely a JobService or a foreground service maybe the better way to go.
 
 <b>JobIntentServiceDemo</b> is an example of a jobIntentService.  The jobIntentService just toasts a number of random numbers as asked for.
   this JobIntentServices can run in the background without an app in 26/Oreo+
