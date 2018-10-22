@@ -108,7 +108,7 @@ public class fileDlService extends IntentService {
             );
             PendingIntent contentIntent = PendingIntent.getActivity(this, 100, notificationIntent, 0);
 
-            noti = new NotificationCompat.Builder(getApplicationContext())
+            noti = new NotificationCompat.Builder(getApplicationContext(), MainActivity.id)
                     .setSmallIcon(R.drawable.ic_launcher)
                     .setWhen(System.currentTimeMillis())  //When the event occurred, now, since noti are stored by time.
                     .setContentIntent(contentIntent)  //what activity to open.
@@ -118,7 +118,7 @@ public class fileDlService extends IntentService {
                     .build();  //finally build and return a Notification.
 
         } else {
-            noti = new NotificationCompat.Builder(getApplicationContext())
+            noti = new NotificationCompat.Builder(getApplicationContext(), MainActivity.id)
                     .setSmallIcon(R.drawable.ic_launcher)
                     .setWhen(System.currentTimeMillis())  //When the event occurred, now, since noti are stored by time.
                     .setContentTitle("File Download")   //Title message top row.
