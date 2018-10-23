@@ -21,7 +21,7 @@ import androidx.core.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
-/*
+/**
  * A simple example of IntentService that downloads a file from the Internet to 
  * the pictures directory.
  */
