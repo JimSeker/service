@@ -1,11 +1,13 @@
 package edu.cs4730.workmanagerdemo;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import androidx.work.Worker;
+import androidx.work.WorkerParameters;
 
-/*
+/**
  * very simple worker to fake some work and allow the MainActivity to observe.  It is intended to run
  * for 2 minutes (maybe shorter) so the UI can update and say its working.  but really nothing
  * interesting happens in here.
@@ -15,6 +17,10 @@ import androidx.work.Worker;
  * though.  hence all the logging here.
  */
 public class WorkerA extends Worker {
+    public WorkerA(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+        super(context, workerParams);
+    }
+
     @NonNull
     @Override
     public Result doWork() {

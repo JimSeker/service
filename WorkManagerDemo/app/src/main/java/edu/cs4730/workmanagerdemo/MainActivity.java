@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.util.concurrent.TimeUnit;
+
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.Constraints;
 import androidx.work.Data;
@@ -16,12 +17,18 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkStatus;
 
-
-/*
+/**
  * need a simple worker, parameter worker.  Then chain them together for the last example.  maybe a parallel
- *
+ * <p>
  * As of Oct 9, 2018, this can't converted to androidx yet.
  * see https://developer.android.com/topic/libraries/architecture/adding-components
+ * <p>
+ * This is using alpha libraries, which means (like between 9 and 10), method change names or are removed.
+ * So make sure to look at https://developer.android.com/jetpack/docs/release-notes  to see if the
+ * WorkManager has been changed again.   things that say, "Breaking API Changes"
+ *
+ * As of Oct 24, 2018, It can be converted to androidx, because it looking for support.liveData and
+ * not androidx.livedata.
  */
 
 public class MainActivity extends AppCompatActivity {
@@ -61,11 +68,10 @@ public class MainActivity extends AppCompatActivity {
                 chain();
             }
         });
-
     }
 
 
-    /*
+    /**
      *  This will create a oneshot workerA task and schedule it to run once.
      *  commented out code shows how to make it recur every 24 hours.
      */
@@ -95,13 +101,13 @@ public class MainActivity extends AppCompatActivity {
         WorkManager.getInstance().enqueue(runWorkA);
 
         //not necessary, but this will tell us the status of the task.
-        LiveData<WorkStatus> status = WorkManager.getInstance().getStatusById(runWorkA.getId());
+        LiveData<WorkStatus> status = WorkManager.getInstance().getStatusByIdLiveData(runWorkA.getId());
         status.observe(this, new Observer<WorkStatus>() {
             @Override
             public void onChanged(@Nullable WorkStatus workStatus) {
                 switch (workStatus.getState()) {
                     case BLOCKED:
-                        tv_oneshot.setText("Status is Blcoked");
+                        tv_oneshot.setText("Status is Blocked");
                         break;
                     case CANCELLED:
                         tv_oneshot.setText("Status is canceled");
@@ -142,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
         WorkManager.getInstance().enqueue(mathWork);
 
         //now set the observer to get the result.
-        WorkManager.getInstance().getStatusById(mathWork.getId())
+        WorkManager.getInstance().getStatusByIdLiveData(mathWork.getId())
             .observe(this, new Observer<WorkStatus>() {
                 @Override
                 public void onChanged(@Nullable WorkStatus status) {
@@ -172,13 +178,13 @@ public class MainActivity extends AppCompatActivity {
 
         // not necessary, but so the display updates get the LiveData for each and set to update the textviews.
 
-        LiveData<WorkStatus> status = WorkManager.getInstance().getStatusById(runWorkA.getId());
+        LiveData<WorkStatus> status = WorkManager.getInstance().getStatusByIdLiveData(runWorkA.getId());
         status.observe(this, new Observer<WorkStatus>() {
             @Override
             public void onChanged(@Nullable WorkStatus workStatus) {
                 switch (workStatus.getState()) {
                     case BLOCKED:
-                        tv_chaina.setText("A Status is Blcoked");
+                        tv_chaina.setText("A Status is Blocked");
                         break;
                     case CANCELLED:
                         tv_chaina.setText("A Status is canceled");
@@ -201,13 +207,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        LiveData<WorkStatus> statusb = WorkManager.getInstance().getStatusById(runWorkB.getId());
+        LiveData<WorkStatus> statusb = WorkManager.getInstance().getStatusByIdLiveData(runWorkB.getId());
         statusb.observe(this, new Observer<WorkStatus>() {
             @Override
             public void onChanged(@Nullable WorkStatus workStatus) {
                 switch (workStatus.getState()) {
                     case BLOCKED:
-                        tv_chainb.setText("B Status is Blcoked");
+                        tv_chainb.setText("B Status is Blocked");
                         break;
                     case CANCELLED:
                         tv_chainb.setText("B Status is canceled");
@@ -230,13 +236,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        LiveData<WorkStatus> statusc = WorkManager.getInstance().getStatusById(runWorkC.getId());
+        LiveData<WorkStatus> statusc = WorkManager.getInstance().getStatusByIdLiveData(runWorkC.getId());
         statusc.observe(this, new Observer<WorkStatus>() {
             @Override
             public void onChanged(@Nullable WorkStatus workStatus) {
                 switch (workStatus.getState()) {
                     case BLOCKED:
-                        tv_chainc.setText("C Status is Blcoked");
+                        tv_chainc.setText("C Status is Blocked");
                         break;
                     case CANCELLED:
                         tv_chainc.setText("C Status is canceled");

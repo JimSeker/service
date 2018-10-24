@@ -24,7 +24,7 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:1.1.1"
 
     //Work Manager, which currently depends on the appcompat-v7 library.
-    implementation 'android.arch.work:work-runtime:1.0.0-alpha09'
+    implementation 'android.arch.work:work-runtime:1.0.0-alpha10'
     // optional - Firebase JobDispatcher support
     //implementation "android.arch.work:work-firebase:1.0.0-alpha06"
 

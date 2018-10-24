@@ -1,5 +1,6 @@
 package edu.cs4730.workmanagerdemo;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 
 import java.util.Random;
@@ -7,7 +8,7 @@ import java.util.Random;
 import androidx.work.Data;
 import androidx.work.Worker;
 
-/*
+/**
  * this takes a parameter and returns a value
  * the input x is top number for the random number generator
  * and result is the random number.
@@ -21,6 +22,10 @@ public class WorkerParameters extends Worker {
     public static final String KEY_RESULT = "result";
 
     Random r;
+
+    public WorkerParameters(@NonNull Context context, @NonNull androidx.work.WorkerParameters workerParams) {
+        super(context, workerParams);
+    }
 
     @NonNull
     @Override
