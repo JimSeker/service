@@ -8,25 +8,25 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import java.util.concurrent.TimeUnit;
+import java.util.Arrays;
 
-import androidx.work.PeriodicWorkRequest;
-import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
-import androidx.work.WorkStatus;
 
 /**
  * need a simple worker, parameter worker.  Then chain them together for the last example.  maybe a parallel
  * <p>
- * As of Oct 9, 2018, this can't converted to androidx yet.
+ * As of Oct 9, 2018, version 1.0.X can't be converted to androidx yet.
+ * 2.X will be androidx have dependency.  It's 2.0.0-rc01 as of March 7, 2019.
+ *
  * see https://developer.android.com/topic/libraries/architecture/adding-components
  * <p>
  * This is using alpha libraries, which means (like between 9 and 10), method change names or are removed.
  * So make sure to look at https://developer.android.com/jetpack/docs/release-notes  to see if the
  * WorkManager has been changed again.   things that say, "Breaking API Changes"
- *
+ * <p>
  * As of Oct 24, 2018, It can be converted to androidx, because it looking for support.liveData and
  * not androidx.livedata.
  */
@@ -72,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     /**
-     *  This will create a oneshot workerA task and schedule it to run once.
-     *  commented out code shows how to make it recur every 24 hours.
+     * This will create a oneshot workerA task and schedule it to run once.
+     * commented out code shows how to make it recur every 24 hours.
      */
     public void oneshot() {
         //for a schedule once
@@ -101,10 +101,10 @@ public class MainActivity extends AppCompatActivity {
         WorkManager.getInstance().enqueue(runWorkA);
 
         //not necessary, but this will tell us the status of the task.
-        LiveData<WorkStatus> status = WorkManager.getInstance().getStatusByIdLiveData(runWorkA.getId());
-        status.observe(this, new Observer<WorkStatus>() {
+        LiveData<WorkInfo> status = WorkManager.getInstance().getWorkInfoByIdLiveData(runWorkA.getId());
+        status.observe(this, new Observer<WorkInfo>() {
             @Override
-            public void onChanged(@Nullable WorkStatus workStatus) {
+            public void onChanged(@Nullable WorkInfo workStatus) {
                 switch (workStatus.getState()) {
                     case BLOCKED:
                         tv_oneshot.setText("Status is Blocked");
@@ -148,10 +148,10 @@ public class MainActivity extends AppCompatActivity {
         WorkManager.getInstance().enqueue(mathWork);
 
         //now set the observer to get the result.
-        WorkManager.getInstance().getStatusByIdLiveData(mathWork.getId())
-            .observe(this, new Observer<WorkStatus>() {
+        WorkManager.getInstance().getWorkInfoByIdLiveData(mathWork.getId())
+            .observe(this, new Observer<WorkInfo>() {
                 @Override
-                public void onChanged(@Nullable WorkStatus status) {
+                public void onChanged(@Nullable WorkInfo status) {
                     if (status != null && status.getState().isFinished()) {
                         int myResult = status.getOutputData().getInt(WorkerParameters.KEY_RESULT,
                             -1);
@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
         //now setup them up to run, A and B together.  Once they are complete then launch C.
         WorkManager.getInstance()
             // First, run all the A tasks (in parallel):
-            .beginWith(runWorkA, runWorkB)
+            .beginWith(Arrays.asList(runWorkA, runWorkB))
             // ...when all A tasks are finished, run the single B task:
             .then(runWorkC)
             .enqueue();
@@ -178,10 +178,10 @@ public class MainActivity extends AppCompatActivity {
 
         // not necessary, but so the display updates get the LiveData for each and set to update the textviews.
 
-        LiveData<WorkStatus> status = WorkManager.getInstance().getStatusByIdLiveData(runWorkA.getId());
-        status.observe(this, new Observer<WorkStatus>() {
+        LiveData<WorkInfo> status = WorkManager.getInstance().getWorkInfoByIdLiveData(runWorkA.getId());
+        status.observe(this, new Observer<WorkInfo>() {
             @Override
-            public void onChanged(@Nullable WorkStatus workStatus) {
+            public void onChanged(@Nullable WorkInfo workStatus) {
                 switch (workStatus.getState()) {
                     case BLOCKED:
                         tv_chaina.setText("A Status is Blocked");
@@ -207,10 +207,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        LiveData<WorkStatus> statusb = WorkManager.getInstance().getStatusByIdLiveData(runWorkB.getId());
-        statusb.observe(this, new Observer<WorkStatus>() {
+        LiveData<WorkInfo> statusb = WorkManager.getInstance().getWorkInfoByIdLiveData(runWorkB.getId());
+        statusb.observe(this, new Observer<WorkInfo>() {
             @Override
-            public void onChanged(@Nullable WorkStatus workStatus) {
+            public void onChanged(@Nullable WorkInfo workStatus) {
                 switch (workStatus.getState()) {
                     case BLOCKED:
                         tv_chainb.setText("B Status is Blocked");
@@ -236,10 +236,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        LiveData<WorkStatus> statusc = WorkManager.getInstance().getStatusByIdLiveData(runWorkC.getId());
-        statusc.observe(this, new Observer<WorkStatus>() {
+        LiveData<WorkInfo> statusc = WorkManager.getInstance().getWorkInfoByIdLiveData(runWorkC.getId());
+        statusc.observe(this, new Observer<WorkInfo>() {
             @Override
-            public void onChanged(@Nullable WorkStatus workStatus) {
+            public void onChanged(@Nullable WorkInfo workStatus) {
                 switch (workStatus.getState()) {
                     case BLOCKED:
                         tv_chainc.setText("C Status is Blocked");

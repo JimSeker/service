@@ -31,12 +31,12 @@ public class WorkerA extends Worker {
             try {
                 Thread.sleep(5000);
             } catch (InterruptedException e) {
-                return Result.FAILURE;  //we have failed, do retry
+                return Result.failure();  //we have failed, do retry
                 //return Result.RETRY;  //we have failed, but retry later on.
             }
             Log.d("workerA", "i is " +i);
         }
         Log.d("workerA", "done.");
-        return Result.SUCCESS;
+        return Result.success();
     }
 }

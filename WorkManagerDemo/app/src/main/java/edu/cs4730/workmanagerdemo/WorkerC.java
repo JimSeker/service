@@ -29,13 +29,13 @@ public class WorkerC extends Worker {
             try {
                 Thread.sleep(5000);
             } catch (InterruptedException e) {
-                return Result.FAILURE;  //we have failed, do retry
+                return Result.failure();  //we have failed, do retry
                 //return Result.RETRY;  //we have failed, but retry later on.
             }
             Log.d(TAG, "i is " + i);
         }
         Log.d(TAG, "done.");
-        return Result.SUCCESS;
+        return Result.success();
     }
 
 }

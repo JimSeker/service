@@ -43,7 +43,7 @@ public class WorkerParameters extends Worker {
         Data output = new Data.Builder()
             .putInt(KEY_RESULT, result)
             .build();
-        setOutputData(output);
-        return Result.SUCCESS;
+
+        return Result.success(output);
     }
 }
