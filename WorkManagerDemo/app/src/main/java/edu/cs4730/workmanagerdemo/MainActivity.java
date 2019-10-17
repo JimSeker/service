@@ -1,9 +1,9 @@
 package edu.cs4730.workmanagerdemo;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -18,17 +18,10 @@ import androidx.work.WorkManager;
 /**
  * need a simple worker, parameter worker.  Then chain them together for the last example.  maybe a parallel
  * <p>
- * As of Oct 9, 2018, version 1.0.X can't be converted to androidx yet.
- * 2.X will be androidx have dependency.  It's 2.0.0-rc01 as of March 7, 2019.
  *
  * see https://developer.android.com/topic/libraries/architecture/adding-components
  * <p>
- * This is using alpha libraries, which means (like between 9 and 10), method change names or are removed.
- * So make sure to look at https://developer.android.com/jetpack/docs/release-notes  to see if the
- * WorkManager has been changed again.   things that say, "Breaking API Changes"
- * <p>
- * As of Oct 24, 2018, It can be converted to androidx, because it looking for support.liveData and
- * not androidx.livedata.
+
  */
 
 public class MainActivity extends AppCompatActivity {
@@ -98,10 +91,10 @@ public class MainActivity extends AppCompatActivity {
        */
 
         //now enqueue the task so it can be run.
-        WorkManager.getInstance().enqueue(runWorkA);
+        WorkManager.getInstance(getApplicationContext()).enqueue(runWorkA);
 
         //not necessary, but this will tell us the status of the task.
-        LiveData<WorkInfo> status = WorkManager.getInstance().getWorkInfoByIdLiveData(runWorkA.getId());
+        LiveData<WorkInfo> status = WorkManager.getInstance(getApplicationContext()).getWorkInfoByIdLiveData(runWorkA.getId());
         status.observe(this, new Observer<WorkInfo>() {
             @Override
             public void onChanged(@Nullable WorkInfo workStatus) {
@@ -145,10 +138,10 @@ public class MainActivity extends AppCompatActivity {
         OneTimeWorkRequest mathWork = new OneTimeWorkRequest.Builder(WorkerParameters.class)
             .setInputData(myData)
             .build();
-        WorkManager.getInstance().enqueue(mathWork);
+        WorkManager.getInstance(getApplicationContext()).enqueue(mathWork);
 
         //now set the observer to get the result.
-        WorkManager.getInstance().getWorkInfoByIdLiveData(mathWork.getId())
+        WorkManager.getInstance(getApplicationContext()).getWorkInfoByIdLiveData(mathWork.getId())
             .observe(this, new Observer<WorkInfo>() {
                 @Override
                 public void onChanged(@Nullable WorkInfo status) {
@@ -168,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
         OneTimeWorkRequest runWorkB = new OneTimeWorkRequest.Builder(WorkerB.class).build();
         OneTimeWorkRequest runWorkC = new OneTimeWorkRequest.Builder(WorkerC.class).build();
         //now setup them up to run, A and B together.  Once they are complete then launch C.
-        WorkManager.getInstance()
+        WorkManager.getInstance(getApplicationContext())
             // First, run all the A tasks (in parallel):
             .beginWith(Arrays.asList(runWorkA, runWorkB))
             // ...when all A tasks are finished, run the single B task:
@@ -178,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
 
         // not necessary, but so the display updates get the LiveData for each and set to update the textviews.
 
-        LiveData<WorkInfo> status = WorkManager.getInstance().getWorkInfoByIdLiveData(runWorkA.getId());
+        LiveData<WorkInfo> status = WorkManager.getInstance(getApplicationContext()).getWorkInfoByIdLiveData(runWorkA.getId());
         status.observe(this, new Observer<WorkInfo>() {
             @Override
             public void onChanged(@Nullable WorkInfo workStatus) {
@@ -207,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        LiveData<WorkInfo> statusb = WorkManager.getInstance().getWorkInfoByIdLiveData(runWorkB.getId());
+        LiveData<WorkInfo> statusb = WorkManager.getInstance(getApplicationContext()).getWorkInfoByIdLiveData(runWorkB.getId());
         statusb.observe(this, new Observer<WorkInfo>() {
             @Override
             public void onChanged(@Nullable WorkInfo workStatus) {
@@ -236,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        LiveData<WorkInfo> statusc = WorkManager.getInstance().getWorkInfoByIdLiveData(runWorkC.getId());
+        LiveData<WorkInfo> statusc = WorkManager.getInstance(getApplicationContext()).getWorkInfoByIdLiveData(runWorkC.getId());
         statusc.observe(this, new Observer<WorkInfo>() {
             @Override
             public void onChanged(@Nullable WorkInfo workStatus) {

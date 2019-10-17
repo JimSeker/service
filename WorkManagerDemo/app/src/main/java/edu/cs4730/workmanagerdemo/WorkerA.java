@@ -1,7 +1,7 @@
 package edu.cs4730.workmanagerdemo;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 import androidx.work.Worker;
