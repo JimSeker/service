@@ -9,12 +9,14 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.PersistableBundle;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-/*
+/**
  * this demo shows how the workItem enqueue/dequeue works.  Note this API 26+
  * https://developer.android.com/reference/android/app/job/JobScheduler.html#enqueue(android.app.job.JobInfo,%20android.app.job.JobWorkItem)
  * https://developer.android.com/reference/android/app/job/JobParameters.html#dequeueWork()
@@ -35,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         //get the Job Scheduler
         jobScheduler = getSystemService(JobScheduler.class);
         //get the job we will be sending workitems too.
-        job =getJobInfo();
+        job = getJobInfo();
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -46,17 +48,17 @@ public class MainActivity extends AppCompatActivity {
                 i = new Intent();
                 i.putExtra("Key1", "first item"); //fake data too.
                 item = new JobWorkItem(i);
-                jobScheduler.enqueue(job,item);
+                jobScheduler.enqueue(job, item);
                 //second item
                 i = new Intent();
                 i.putExtra("Key1", "Second item"); //fake data too.
                 item = new JobWorkItem(i);
-                jobScheduler.enqueue(job,item);
+                jobScheduler.enqueue(job, item);
                 //first item
                 i = new Intent();
                 i.putExtra("Key1", "Third item"); //fake data too.
                 item = new JobWorkItem(i);
-                jobScheduler.enqueue(job,item);
+                jobScheduler.enqueue(job, item);
 
             }
         });
@@ -81,16 +83,16 @@ public class MainActivity extends AppCompatActivity {
         return builder.build();
     }
 
-    /*
-    * Min Requirement for this example is API 26+, so no wrapper needed to for channel creation.
-    */
+    /**
+     * Min Requirement for this example is API 26+, so no wrapper needed to for channel creation.
+     */
     private void createChannel() {
 
         NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         NotificationChannel mChannel = new NotificationChannel(id1,
-                getString(R.string.channel_name),  //name of the channel
-                NotificationManager.IMPORTANCE_LOW);   //importance level
+            getString(R.string.channel_name),  //name of the channel
+            NotificationManager.IMPORTANCE_LOW);   //importance level
         //important level: default is is high on the phone.  high is urgent on the phone.  low is medium, so none is low?
         // Configure the notification channel.
         mChannel.setDescription(getString(R.string.channel_description));
