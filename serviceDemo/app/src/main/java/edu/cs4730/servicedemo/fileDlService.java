@@ -5,8 +5,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -14,16 +16,24 @@ import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
+
 import androidx.core.app.NotificationCompat;
+
 import android.util.Log;
 import android.widget.Toast;
 
 /**
- * A simple example of IntentService that downloads a file from the Internet to 
+ * A simple example of IntentService that downloads a file from the Internet to
  * the pictures directory.
+ * <p>
+ * With the changes in API 29, this example will need to be rewritten with I'm guessing
+ * a new picker, plus the detectFileUriExposure() will still be a problem as well.
+ * likely just convert this example to the download manager service, instead of written our own?
  */
 
 public class fileDlService extends IntentService {
@@ -31,7 +41,9 @@ public class fileDlService extends IntentService {
     public fileDlService() {
         super("FileDownLoad");
     }
+
     String TAG = "fileDLService";
+
     @Override
     protected void onHandleIntent(Intent intent) {
         URL url;
@@ -39,10 +51,15 @@ public class fileDlService extends IntentService {
         Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
         Bundle extras = intent.getExtras();
         if (extras != null) {
+            File extdir;
             url = (URL) extras.get("URL");
-
-            file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
-                    (String) extras.getString("FILE"));
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+                extdir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            } else {
+                extdir = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);  //this is not the sdcard... not sure how to find in Q
+            }
+            file = new File(extdir, extras.getString("FILE"));
+            Log.wtf(TAG, "file location is (sdcard?) " + file.getAbsolutePath());
         } else {
             shownoti(-1, "Error, No file to download", null);
             return;  //nothing to do.
@@ -84,8 +101,8 @@ public class fileDlService extends IntentService {
 
             //setup a notification so the user knows it has finished.
             shownoti(0, "download ready in "
-                    + ((System.currentTimeMillis() - startTime) / 1000)
-                    + " sec", file);
+                + ((System.currentTimeMillis() - startTime) / 1000)
+                + " sec", file);
 
         } catch (IOException e) {
             Log.wtf(TAG, "something died");
@@ -104,27 +121,28 @@ public class fileDlService extends IntentService {
             Intent notificationIntent = new Intent();
             notificationIntent.setAction(Intent.ACTION_VIEW);
             notificationIntent.setDataAndType(
-                    Uri.parse("file://" + file.getAbsolutePath()), "image/*"
+                Uri.parse("file://" + file.getAbsolutePath()), "image/*"
             );
+
             PendingIntent contentIntent = PendingIntent.getActivity(this, 100, notificationIntent, 0);
 
             noti = new NotificationCompat.Builder(getApplicationContext(), MainActivity.id)
-                    .setSmallIcon(R.drawable.ic_launcher)
-                    .setWhen(System.currentTimeMillis())  //When the event occurred, now, since noti are stored by time.
-                    .setContentIntent(contentIntent)  //what activity to open.
-                    .setContentTitle("FileDownload")   //Title message top row.
-                    .setContentText(message)  //message when looking at the notification, second row
-                    .setAutoCancel(true)   //allow auto cancel when pressed.
-                    .build();  //finally build and return a Notification.
+                .setSmallIcon(R.drawable.ic_launcher)
+                .setWhen(System.currentTimeMillis())  //When the event occurred, now, since noti are stored by time.
+                .setContentIntent(contentIntent)  //what activity to open.
+                .setContentTitle("FileDownload")   //Title message top row.
+                .setContentText(message)  //message when looking at the notification, second row
+                .setAutoCancel(true)   //allow auto cancel when pressed.
+                .build();  //finally build and return a Notification.
 
         } else {
             noti = new NotificationCompat.Builder(getApplicationContext(), MainActivity.id)
-                    .setSmallIcon(R.drawable.ic_launcher)
-                    .setWhen(System.currentTimeMillis())  //When the event occurred, now, since noti are stored by time.
-                    .setContentTitle("File Download")   //Title message top row.
-                    .setContentText(message)  //message when looking at the notification, second row
-                    .setAutoCancel(true)   //allow auto cancel when pressed.
-                    .build();  //finally build and return a Notification.
+                .setSmallIcon(R.drawable.ic_launcher)
+                .setWhen(System.currentTimeMillis())  //When the event occurred, now, since noti are stored by time.
+                .setContentTitle("File Download")   //Title message top row.
+                .setContentText(message)  //message when looking at the notification, second row
+                .setAutoCancel(true)   //allow auto cancel when pressed.
+                .build();  //finally build and return a Notification.
         }
         //finally Show the notification
         nm.notify(100, noti);
