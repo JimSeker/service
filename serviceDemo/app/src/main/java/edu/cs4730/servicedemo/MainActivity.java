@@ -27,6 +27,8 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity {
 
     public static final int REQUEST_PERM_ACCESS = 1;
+    public static final int WRITE_REQUEST_CODE = 43;
+
     MainFragment mainFragment;
     public static String id = "test_channel_01";
 
@@ -56,37 +58,6 @@ public class MainActivity extends AppCompatActivity {
         createchannel();  //creates the channels for notifications if needed.
     }
 
-    //handle the response.
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String permissions[], @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case REQUEST_PERM_ACCESS: {  //external file write fragment.
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-                    mainFragment.logger.append("External File Write Access: Granted\n");
-                    mainFragment.downloadFile();
-
-                } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                    mainFragment.logger.append("External File Write Access: Not Granted\n");
-                }
-
-            }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
-        }
-    }
-
-
-
     /**
      * for API 26+ create notification channels
      */
@@ -108,6 +79,14 @@ public class MainActivity extends AppCompatActivity {
             nm.createNotificationChannel(mChannel);
 
         }
+    }
+
+
+    //handle the response, but fully in the fragment.
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String permissions[], @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode,permissions,grantResults);
     }
 
 }

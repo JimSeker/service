@@ -7,7 +7,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
+import java.util.Objects;
 
 import android.app.IntentService;
 import android.app.Notification;
@@ -19,6 +21,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 
@@ -47,7 +50,8 @@ public class fileDlService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         URL url;
-        File file;
+        Uri uri = null;
+        File file ;
         Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
         Bundle extras = intent.getExtras();
         if (extras != null) {
@@ -55,25 +59,37 @@ public class fileDlService extends IntentService {
             url = (URL) extras.get("URL");
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
                 extdir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                file = new File(extdir, extras.getString("FILE"));
+                Log.wtf(TAG, "file location is (sdcard?) " + file.getAbsolutePath());
+                Log.d(TAG, "File:" + file.getAbsolutePath());
             } else {
-                extdir = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);  //this is not the sdcard... not sure how to find in Q
+                uri = (Uri) extras.get("URI");
+                Log.d(TAG, "File:" + uri.toString());
+                file =  new File(uri.toString());
             }
-            file = new File(extdir, extras.getString("FILE"));
-            Log.wtf(TAG, "file location is (sdcard?) " + file.getAbsolutePath());
         } else {
             shownoti(-1, "Error, No file to download", null);
             return;  //nothing to do.
         }
-        Log.d(TAG, "File:" + file.getAbsolutePath());
+
         try {
             long startTime = System.currentTimeMillis();
+            FileOutputStream fos;
 
             Log.d(TAG, "download url:" + url);
-            Log.d(TAG, "downloaded file name:" + file.getAbsolutePath());
+
             //Open a connection to that URL.
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             //open output file
-            FileOutputStream fos = new FileOutputStream(file);
+            if (uri == null) {
+                fos = new FileOutputStream(file);
+                Log.d(TAG, "downloaded file name:" + file.getAbsolutePath());
+            } else {
+                ParcelFileDescriptor pfd = getContentResolver().
+                    openFileDescriptor(uri, "w");
+                fos =  new FileOutputStream(pfd.getFileDescriptor());
+
+            }
             try {
                 Log.d(TAG, "download beginning");
                 //read in from the connection (which is not a string, so getting bytes) and then
@@ -93,12 +109,13 @@ public class fileDlService extends IntentService {
             }
 
             //new tell the system that the file exists , so it will show up in gallery/photos/whatever
-            ContentValues values = new ContentValues();
-            values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
-            values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-            values.put(MediaStore.MediaColumns.DATA, file.toString());
-            getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-
+            if (uri == null) {
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
+                values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+                values.put(MediaStore.MediaColumns.DATA, file.toString());
+                getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            }
             //setup a notification so the user knows it has finished.
             shownoti(0, "download ready in "
                 + ((System.currentTimeMillis() - startTime) / 1000)
