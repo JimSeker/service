@@ -36,6 +36,7 @@ public class MySensorService extends Service implements SensorEventListener {
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        logthis("the service is alive!!!");
     }
 
     //ensure that we disconnect from the sensor once it's done.
@@ -62,7 +63,7 @@ public class MySensorService extends Service implements SensorEventListener {
 
         //logthis("Vector is " + vector);
 
-        if (vector <=3.0) { // 3 m/s should be falling, I think...
+        if (vector <=4.0) { // 3 m/s should be falling, I think...
             //Toast.makeText(getBaseContext(),"I'm falling " + vector, Toast.LENGTH_SHORT).show();
             playsnd();
         }
