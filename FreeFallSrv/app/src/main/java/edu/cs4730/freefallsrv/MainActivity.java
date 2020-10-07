@@ -10,9 +10,9 @@ import android.widget.Button;
  *  This is a simple demo of starting a service based on the freefall code from the sensor repo
  *  This code only starts a service.
  *
- *
  *  With the new background restrictions in API 27+, this app doesn't work very well anymore.
- *  On the upside, services can't just eat the battery anymore.
+ *  On the upside, services can't just eat the battery anymore.  This example needs to be reworked
+ *  for API 29+  and it doesn't work on API 30.
  */
 
 public class MainActivity extends AppCompatActivity {

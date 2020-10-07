@@ -10,16 +10,17 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.Process;
 import android.os.Message;
+
 import androidx.core.app.NotificationCompat;
+
 import android.util.Log;
 import android.widget.Toast;
 
 import java.util.Random;
 
-/*
+/**
  * this is an example of a service that prompts itself to a foreground service with a persistent
  * notification.  Which is now required by Oreo otherwise, a background service without an app will be killed.
- *
  */
 
 public class MyForeGroundService extends Service {
@@ -62,13 +63,14 @@ public class MyForeGroundService extends Service {
                     try {
                         wait(5000);
                     } catch (InterruptedException e) {
+                        Log.e(TAG, e.toString());
                     }
                 }
                 String info = i + " random " + r.nextInt(100);
                 Log.d("intentServer", info);
                 //make a toast
                 //unable to ensure the toasts will always show, so use a handler and post it for later.
-               // Toast.makeText(MyForeGroundService.this, info, Toast.LENGTH_SHORT).show();
+                // Toast.makeText(MyForeGroundService.this, info, Toast.LENGTH_SHORT).show();
                 toast(info);
             }
             // Stop the service using the startId, so that we don't stop

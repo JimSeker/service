@@ -91,8 +91,8 @@ public class MainActivity extends AppCompatActivity {
         NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         NotificationChannel mChannel = new NotificationChannel(id1,
-            getString(R.string.channel_name),  //name of the channel
-            NotificationManager.IMPORTANCE_LOW);   //importance level
+                getString(R.string.channel_name),  //name of the channel
+                NotificationManager.IMPORTANCE_LOW);   //importance level
         //important level: default is is high on the phone.  high is urgent on the phone.  low is medium, so none is low?
         // Configure the notification channel.
         mChannel.setDescription(getString(R.string.channel_description));

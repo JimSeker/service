@@ -40,7 +40,7 @@ public class MyJobWorkService extends JobService {
             boolean cancelled;
             JobWorkItem work;
 
-            /**
+            /*
              * Iterate over available work.  Once dequeueWork() returns null, the
              * job's work queue is empty and the job has stopped, so we can let this
              * async task complete.

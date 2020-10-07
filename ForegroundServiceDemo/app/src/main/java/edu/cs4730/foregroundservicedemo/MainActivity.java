@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
                     //lower then Oreo, just start the service.
                     startService(number5);
                 }
-                finish();
+                finish();  //make sure this activity has exited. f
             }
         });
     }

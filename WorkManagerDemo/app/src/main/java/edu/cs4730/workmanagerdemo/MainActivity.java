@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -17,11 +18,10 @@ import androidx.work.WorkManager;
 
 /**
  * need a simple worker, parameter worker.  Then chain them together for the last example.  maybe a parallel
+ * Make sure you are looking at the logcat as well.  You can see what the workers are doing.
  * <p>
- *
  * see https://developer.android.com/topic/libraries/architecture/adding-components
  * <p>
-
  */
 
 public class MainActivity extends AppCompatActivity {
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
     public void oneshot() {
         //for a schedule once
         OneTimeWorkRequest runWorkA = new OneTimeWorkRequest.Builder(WorkerA.class)
-            .build();
+                .build();
 
         /*
         //for recur schedule, say every 24 hours, comment out above, since duplicate variables.
@@ -129,29 +129,29 @@ public class MainActivity extends AppCompatActivity {
     public void param() {
         // Create the Data object:
         final Data myData = new Data.Builder()
-            // We need to pass three integers: X, Y, and Z
-            .putInt(WorkerParameters.KEY_X_ARG, 42)
-            // ... and build the actual Data object:
-            .build();
+                // We need to pass three integers: X, Y, and Z
+                .putInt(WorkerParameters.KEY_X_ARG, 42)
+                // ... and build the actual Data object:
+                .build();
 
         // ...then create and enqueue a OneTimeWorkRequest that uses those arguments
         OneTimeWorkRequest mathWork = new OneTimeWorkRequest.Builder(WorkerParameters.class)
-            .setInputData(myData)
-            .build();
+                .setInputData(myData)
+                .build();
         WorkManager.getInstance(getApplicationContext()).enqueue(mathWork);
 
         //now set the observer to get the result.
         WorkManager.getInstance(getApplicationContext()).getWorkInfoByIdLiveData(mathWork.getId())
-            .observe(this, new Observer<WorkInfo>() {
-                @Override
-                public void onChanged(@Nullable WorkInfo status) {
-                    if (status != null && status.getState().isFinished()) {
-                        int myResult = status.getOutputData().getInt(WorkerParameters.KEY_RESULT,
-                            -1);
-                        tv_param.setText("Result is " + myResult);
+                .observe(this, new Observer<WorkInfo>() {
+                    @Override
+                    public void onChanged(@Nullable WorkInfo status) {
+                        if (status != null && status.getState().isFinished()) {
+                            int myResult = status.getOutputData().getInt(WorkerParameters.KEY_RESULT,
+                                    -1);
+                            tv_param.setText("Result is " + myResult);
+                        }
                     }
-                }
-            });
+                });
     }
 
     //This method changes together WorkerA and B in parallel and then C.
@@ -162,11 +162,11 @@ public class MainActivity extends AppCompatActivity {
         OneTimeWorkRequest runWorkC = new OneTimeWorkRequest.Builder(WorkerC.class).build();
         //now setup them up to run, A and B together.  Once they are complete then launch C.
         WorkManager.getInstance(getApplicationContext())
-            // First, run all the A tasks (in parallel):
-            .beginWith(Arrays.asList(runWorkA, runWorkB))
-            // ...when all A tasks are finished, run the single B task:
-            .then(runWorkC)
-            .enqueue();
+                // First, run all the A tasks (in parallel):
+                .beginWith(Arrays.asList(runWorkA, runWorkB))
+                // ...when all A tasks are finished, run the single B task:
+                .then(runWorkC)
+                .enqueue();
 
 
         // not necessary, but so the display updates get the LiveData for each and set to update the textviews.

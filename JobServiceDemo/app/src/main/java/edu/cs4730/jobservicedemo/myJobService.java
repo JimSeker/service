@@ -45,6 +45,7 @@ public class myJobService extends JobService {
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
+            Log.e(TAG, e.toString());
         }
 
         Toast.makeText(getApplicationContext(), "Job: number is " + mGenerator.nextInt(max), Toast.LENGTH_SHORT).show();
@@ -78,7 +79,7 @@ public class myJobService extends JobService {
         JobInfo.Builder builder = new JobInfo.Builder(0, serviceComponent);
 
         if (recurring) {
-            builder.setPeriodic(15* 10000); //only once every 15 seconds.
+            builder.setPeriodic(15 * 10000); //only once every 15 seconds.
             //builder.setPersisted(true);  //will persist across reboots.
             //except this runs in about 10 to 30 minute intervals...  Likely a min threshold here.
             Log.wtf(TAG, "set recurring");
@@ -97,13 +98,13 @@ public class myJobService extends JobService {
         extras.putInt("max", max);
         builder.setExtras(extras);
 
-        JobScheduler jobScheduler = (JobScheduler) context.getSystemService(JobScheduler.class);
+        JobScheduler jobScheduler = context.getSystemService(JobScheduler.class);
         jobScheduler.schedule(builder.build());
     }
 
     // cancel all the jobs.
     public static void cancelJob(Context context) {
-        JobScheduler jobScheduler = (JobScheduler) context.getSystemService(JobScheduler.class);
+        JobScheduler jobScheduler = context.getSystemService(JobScheduler.class);
         jobScheduler.cancelAll();
     }
 

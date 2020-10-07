@@ -1,18 +1,19 @@
 package edu.cs4730.jobservicedemo;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
-/*
+/**
  * not much to see here. Just the buttons and how to start the jobscheduler
  * references:
  * https://developer.android.com/reference/android/app/job/JobScheduler.html
  * https://developer.android.com/reference/android/app/job/JobInfo.Builder.html
  * https://github.com/googlesamples/android-JobScheduler
  * http://www.vogella.com/tutorials/AndroidTaskScheduling/article.html
-*/
+ */
 
 
 public class MainActivity extends AppCompatActivity {
