@@ -17,7 +17,8 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="edu.cs4730.servicedemo.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

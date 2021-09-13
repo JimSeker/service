@@ -57,7 +57,7 @@ public class MyForeGroundService extends Service {
             if (extras != null) {
                 times = extras.getInt("times", 1);  //default is one
             }
-            //loop that many times, sleeping for 5 seconds.
+            //loop that many times, sleeping for 2 seconds.
             for (i = 0; i < times; i++) {
                 synchronized (this) {
                     try {

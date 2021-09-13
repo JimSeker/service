@@ -111,8 +111,14 @@ public class MyJobWorkService extends JobService {
      */
     private void showNotification(String text) {
         // The PendingIntent to launch our activity if the user selects this notification
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+        PendingIntent contentIntent = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            contentIntent = PendingIntent.getActivity(this, 0,
+                    new Intent(this, MainActivity.class), PendingIntent.FLAG_MUTABLE);
+        } else {
+            contentIntent = PendingIntent.getActivity(this, 0,
                 new Intent(this, MainActivity.class), 0);
+        }
 
         // Set the info for the views that show in the notification panel.
         Notification.Builder noteBuilder = new Notification.Builder(this, MainActivity.id1)

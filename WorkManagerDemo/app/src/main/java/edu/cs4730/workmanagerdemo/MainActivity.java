@@ -22,6 +22,11 @@ import androidx.work.WorkManager;
  * <p>
  * see https://developer.android.com/topic/libraries/architecture/adding-components
  * <p>
+ *
+ *  NOTE, currently can't be run at API 31.    Error:
+ *   java.lang.IllegalArgumentException: edu.cs4730.workmanagerdemo: Targeting S+ (version 31 and above) requires that one of FLAG_IMMUTABLE or FLAG_MUTABLE be specified when creating a PendingIntent.
+ *     Strongly consider using FLAG_IMMUTABLE, only use FLAG_MUTABLE if some functionality depends on the PendingIntent being mutable, e.g. if it needs to be used with inline replies or bubbles.
+ * except, I have no pendingIntents, so it got to be something in the workmanager libriry.
  */
 
 public class MainActivity extends AppCompatActivity {
@@ -33,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         //textviews for the buttons to show what is going on.
         tv_oneshot = findViewById(R.id.tv_oneshot);
         tv_param = findViewById(R.id.tv_param);
@@ -61,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 chain();
             }
         });
+
     }
 
 
