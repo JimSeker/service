@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.cs4730.servicedemo">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -25,9 +23,6 @@
             android:label="@string/app_name" />
         <service
             android:name=".myService"
-            android:label="@string/app_name" />
-        <service
-            android:name=".fileDlService"
             android:label="@string/app_name" />
     </application>
 

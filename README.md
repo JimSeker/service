@@ -17,7 +17,7 @@ Shows how to schedule a one off (with a recurring if you want) and a recurring o
 
 `JobServiceJobWorkItemDemo` is JobService, but instead of scheduling, it uses the new enqueue and dequeue methods.  Note: This is a API 26/Oreo+ example.
 
-`ServiceDemo` is a example of how to call Services, both IntentService and a Service.  plus an example of the download service too, which fails in api 30.
+`ServiceDemo` is a example of how to call Services, both IntentService and a Service.  DownloadService see https://github.com/JimSeker/networking[DownloadDemo]
 
 `ServiceDemoIPC` is an very simple example of how to use the binder pieces so an activity/fragment can call into the service.
 

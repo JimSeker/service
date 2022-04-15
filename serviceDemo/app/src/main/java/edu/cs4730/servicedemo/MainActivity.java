@@ -15,17 +15,12 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-
 /**
- * * A simple example of how to call/start services.
- * <p>
- * The activity handles the response for the file permission request.
+ * A simple example of how to call/start services.
  */
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final int REQUEST_PERM_ACCESS = 1;
-    public static final int WRITE_REQUEST_CODE = 43;
     public static String id = "test_channel_01";
 
     TextView logger;
@@ -93,13 +88,7 @@ public class MainActivity extends AppCompatActivity {
                 startService(number5);
             }
         });
-        //
-        findViewById(R.id.btn_file).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               // CheckPerm();
-            }
-        });
+
         createchannel();  //creates the channels for notifications if needed.
     }
 
@@ -124,140 +113,4 @@ public class MainActivity extends AppCompatActivity {
         nm.createNotificationChannel(mChannel);
 
     }
-
-
-//    public void downloadFile() {
-//        URL url = null;
-//        String file = "";
-//        try {
-//            //url = new URL ("http://www.cs.uwyo.edu/~seker/courses/4730/example/pic.jpg");
-//
-//            //for a bigger file: http://www.nasa.gov/images/content/206402main_jsc2007e113280_hires.jpg
-//            //for reason I don't understand, I can't download it from nasa on the phone... weird...
-//            // url = new URL("http://www.nasa.gov/images/content/206402main_jsc2007e113280_hires.jpg");
-//            url = new URL("http://www.cs.uwyo.edu/~seker/courses/4730/example/206402main_jsc2007e113280_hires.jpg");
-//
-//            //yes, I could write the file name, but this means I don't have think it about if I change files.
-//            file = URLUtil.guessFileName(url.getFile(), null, null);
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {  //storage sucks now..
-//                createFile("image/png", file);
-//                return;  //to the activityreturned ...;
-//            }
-//
-//        } catch (MalformedURLException e) {
-//
-//            e.printStackTrace();
-//        }
-//
-//        //setup intent and send it.
-//        Intent getfile = new Intent(getApplicationContext(), fileDlService.class);
-//        getfile.putExtra("FILE", file);
-//        getfile.putExtra("URL", url);
-//        startService(getfile);
-//    }
-
-
-//    public void CheckPerm() {
-//        if ((ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) ||
-//            (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)) {
-//            //I'm on not explaining why, just asking for permission.
-//            Log.v(TAG, "asking for permissions");
-//            //note, not ActivityCompat. which sends it to the activity, instead of the fragment.  the super the activity didn't help.
-//            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE},
-//                MainActivity.REQUEST_PERM_ACCESS);
-//
-//        } else {
-//            logger.append("Contact Write Access: Granted\n");
-//            downloadFile();
-//        }
-//
-//    }
-
-//    private void createFile(String mimeType, String fileName) {
-//        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-//
-//        // Filter to only show results that can be "opened", such as
-//        // a file (as opposed to a list of contacts or timezones).
-//        intent.addCategory(Intent.CATEGORY_OPENABLE);
-//
-//        // Create a file with the requested MIME type.
-//        intent.setType(mimeType);
-//        intent.putExtra(Intent.EXTRA_TITLE, fileName);
-//        startActivityForResult(intent, MainActivity.WRITE_REQUEST_CODE);
-//    }
-//
-//
-//    //handle the response.
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode,
-//                                           @NonNull String permissions[], @NonNull int[] grantResults) {
-//
-//        switch (requestCode) {
-//            case MainActivity.REQUEST_PERM_ACCESS: {  //external file write fragment.
-//                // If request is cancelled, the result arrays are empty.
-//                if (grantResults.length > 0
-//                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//
-//                    // permission was granted, yay! Do the
-//                    // contacts-related task you need to do.
-//                    logger.append("External File Write Access: Granted\n");
-//                    downloadFile();
-//
-//                } else {
-//
-//                    // permission denied, boo! Disable the
-//                    // functionality that depends on this permission.
-//                    logger.append("External File Write Access: Not Granted\n");
-//                }
-//
-//            }
-//
-//            // other 'case' lines to check for other
-//            // permissions this app might request
-//        }
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//    }
-//
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode,
-//                                 Intent resultData) {
-//
-//        URL url = null;
-//        String file = "";
-//        // The ACTION_OPEN_DOCUMENT intent was sent with the request code
-//        // READ_REQUEST_CODE. If the request code seen here doesn't match, it's the
-//        // response to some other intent, and the code below shouldn't run at all.
-//        try {
-//            //url = new URL ("http://www.cs.uwyo.edu/~seker/courses/4730/example/pic.jpg");
-//
-//            //for a bigger file: http://www.nasa.gov/images/content/206402main_jsc2007e113280_hires.jpg
-//            //for reason I don't understand, I can't download it from nasa on the phone... weird...
-//            // url = new URL("http://www.nasa.gov/images/content/206402main_jsc2007e113280_hires.jpg");
-//            url = new URL("http://www.cs.uwyo.edu/~seker/courses/4730/example/206402main_jsc2007e113280_hires.jpg");
-//
-//            //yes, I could write the file name, but this means I don't have think it about if I change files.
-//            file = URLUtil.guessFileName(url.getFile(), null, null);
-//        } catch (MalformedURLException e) {
-//
-//            e.printStackTrace();
-//        }
-//        if (requestCode == MainActivity.WRITE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-//            // The document selected by the user won't be returned in the intent.
-//            // Instead, a URI to that document will be contained in the return intent
-//            // provided to this method as a parameter.
-//            // Pull that URI using resultData.getData().
-//            Uri uri = null;
-//            if (resultData != null) {
-//                uri = resultData.getData();
-//                Log.i(TAG, "Uri: " + uri.toString());
-//                //setup intent and send it.
-//                Intent getfile = new Intent(getApplicationContext(), fileDlService.class);
-//                getfile.putExtra("URI", uri);
-//                getfile.putExtra("URL", url);
-//                startService(getfile);
-//            }
-//        }
-//        super.onActivityResult(requestCode, resultCode, resultData);
-//    }
-
 }
