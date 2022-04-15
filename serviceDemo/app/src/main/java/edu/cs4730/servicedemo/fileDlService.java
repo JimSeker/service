@@ -22,7 +22,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
-import android.os.StrictMode;
 import android.provider.MediaStore;
 
 import androidx.core.app.NotificationCompat;

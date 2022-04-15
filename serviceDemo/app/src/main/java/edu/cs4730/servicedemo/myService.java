@@ -15,11 +15,13 @@ import android.os.Looper;
 import android.os.Messenger;
 import android.os.Process;
 import android.os.Message;
+
 import androidx.core.app.NotificationCompat;
+
 import android.util.Log;
 import android.widget.Toast;
 
-public class myService1 extends Service {
+public class myService extends Service {
     private Looper mServiceLooper;
     private ServiceHandler mServiceHandler;
 
@@ -54,6 +56,7 @@ public class myService1 extends Service {
                     try {
                         wait(5000);
                     } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
                 }
                 String info = i + " random " + r.nextInt(100);
@@ -119,15 +122,13 @@ public class myService1 extends Service {
     }
 
     public void makenoti(String message) {
-
         Notification noti = new NotificationCompat.Builder(getApplicationContext(), MainActivity.id)
-                .setSmallIcon(R.drawable.ic_launcher)
-                .setWhen(System.currentTimeMillis())  //When the event occurred, now, since noti are stored by time.
-
-                .setContentTitle("Service")   //Title message top row.
-                .setContentText(message)  //message when looking at the notification, second row
-                .setAutoCancel(true)   //allow auto cancel when pressed.
-                .build();  //finally build and return a Notification.
+            .setSmallIcon(R.drawable.ic_launcher)
+            .setWhen(System.currentTimeMillis())  //When the event occurred, now, since noti are stored by time.
+            .setContentTitle("Service")   //Title message top row.
+            .setContentText(message)  //message when looking at the notification, second row
+            .setAutoCancel(true)   //allow auto cancel when pressed.
+            .build();  //finally build and return a Notification.
 
         //Show the notification
         nm.notify(NotID, noti);
