@@ -2,12 +2,6 @@ Android Service Examples
 ===========
 `eclipse/` has the examples in eclipse project format, no longer updated.  Otherwise the examples are for android studio.
 
-`ServiceDemo` is a example of how to call Services, both IntentService and a Service.  plus an example of the download service too, which fails in api 30.
-
-`ServiceDemoIPC` is an very simple example of how to use the binder pieces so an activity/fragment can call into the service.
-
-`ServiceDemoMSG` is a simple example of passing a messages from the service to the activity via a handler.
-
 `ForegroundServiceDemo` is an example of how to create a foreground service which can run without an app.  It needs a persistent notification
 and to be started in the foreground.  This is required in 26/Oreo+, otherwise use a JobIntentService.
 
@@ -22,6 +16,12 @@ it used too.  Likely a JobService or a foreground service maybe the better way t
 Shows how to schedule a one off (with a recurring if you want) and a recurring one that survives reboot as well.
 
 `JobServiceJobWorkItemDemo` is JobService, but instead of scheduling, it uses the new enqueue and dequeue methods.  Note: This is a API 26/Oreo+ example.
+
+`ServiceDemo` is a example of how to call Services, both IntentService and a Service.  plus an example of the download service too, which fails in api 30.
+
+`ServiceDemoIPC` is an very simple example of how to use the binder pieces so an activity/fragment can call into the service.
+
+`ServiceDemoMSG` is a simple example of passing a messages from the service to the activity via a handler.
 
 `WorkManagerDemo` is an example of how to use the new Architecture Worker Tasks for background tasks.  This examples show a simple one, one with parameters, and a set of tasks chained together.  The tasks don't actually do anything interesting.   
 
