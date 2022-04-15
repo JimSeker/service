@@ -46,8 +46,9 @@ public class MyForeGroundService extends Service {
             //promote to foreground and create persistent notification.
             //in Oreo we only have a few seconds to do this or the service is killed.
             Notification notification = getNotification("MyService is running");
-            startForeground(msg.arg1, notification);  //not sure what the ID needs to be.
-            Log.d(TAG, "should be foreground now.");
+            startForeground(msg.arg1, notification);  //the ID as same as the notification id.  can't be zero.
+
+            Log.d(TAG, "should be foreground now. id number is " + msg.arg1);
             // Normally we would do some work here, like download a file.
             // For our example, we just sleep for 5 seconds then display toasts.
             //setup how many messages

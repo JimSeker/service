@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/seker/git/service/JobIntentServiceDemo/app/src/main/res/layout/activity_main.xml" value="0.15577507598784193" />
+        <entry key="..\:/Users/seker/git/service/JobIntentServiceDemo/app/src/main/res/layout/fragment_main.xml" value="0.15577507598784193" />
+      </map>
+    </option>
+  </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />
     <option name="myDefaultNotNull" value="android.support.annotation.NonNull" />

@@ -10,19 +10,14 @@ import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
-
 
 /**
- *  A "simple" service to capture sensor events and determine if the device is in free fall.
- *  It should play a sound, but at the moment, it is just a toast.
- *
- *  This will likely be a pretty good drain on a battery as well.
+ * A "simple" service to capture sensor events and determine if the device is in free fall.
+ * It should play a sound, but at the moment, it is just a toast.
+ * <p>
+ * This will likely be a pretty good drain on a battery as well.
  */
-
-
 public class MySensorService extends Service implements SensorEventListener {
-    Context context;
 
     private SensorManager mSensorManager;
     private Sensor mSensor;
@@ -49,33 +44,33 @@ public class MySensorService extends Service implements SensorEventListener {
 
     @Override
     public IBinder onBind(Intent intent) {
-       return null;
+        return null;
     }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
 
         //SQRT(x*x + y*y + z*z).
-        double vector=Math.sqrt(event.values[0]*event.values[0]+event.values[1]*event.values[1]+event.values[2]*event.values[2]);
+        double vector = Math.sqrt(event.values[0] * event.values[0] + event.values[1] * event.values[1] + event.values[2] * event.values[2]);
         //9.8 m/s is basically not moving
         //3.0 m/s or less is basically falling.
         //20 m/s is landing ish, based on what I read.
 
         //logthis("Vector is " + vector);
 
-        if (vector <=4.0) { // 3 m/s should be falling, I think...
+        if (vector <= 4.0) { // 3 m/s should be falling, I think...
             //Toast.makeText(getBaseContext(),"I'm falling " + vector, Toast.LENGTH_SHORT).show();
             playsnd();
         }
     }
 
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-       //don't care about this.
+        //don't care about this.
     }
 
     public void playsnd() {
         if (mediaPlayer == null) { //first time
-            mediaPlayer =  MediaPlayer.create(getBaseContext(),R.raw.hmscream);
+            mediaPlayer = MediaPlayer.create(getBaseContext(), R.raw.hmscream);
         } else if (mediaPlayer.isPlaying()) { //duh don't start it again.
             //Toast.makeText(getBaseContext(), "I'm playing already", Toast.LENGTH_SHORT).show();
             return;

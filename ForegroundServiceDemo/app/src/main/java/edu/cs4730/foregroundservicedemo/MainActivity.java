@@ -4,7 +4,9 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.view.View;
 
@@ -32,12 +34,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent number5 = new Intent(getBaseContext(), MyForeGroundService.class);
                 number5.putExtra("times", 5);
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                    startForegroundService(number5);
-                } else {
-                    //lower then Oreo, just start the service.
-                    startService(number5);
-                }
+                startForegroundService(number5);
+                //If the API is below 26, then you have to use this
+                //startService(number5);
                 finish();  //make sure this activity has exited. f
             }
         });
@@ -47,20 +46,16 @@ public class MainActivity extends AppCompatActivity {
      * for API 26+ create notification channels
      */
     private void createchannel() {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-            NotificationChannel mChannel = new NotificationChannel(id1,
-                getString(R.string.channel_name),  //name of the channel
-                NotificationManager.IMPORTANCE_LOW);   //importance level
-            //important level: default is is high on the phone.  high is urgent on the phone.  low is medium, so none is low?
-            // Configure the notification channel.
-            mChannel.setDescription(getString(R.string.channel_description));
-            mChannel.enableLights(true);
-            // Sets the notification light color for notifications posted to this channel, if the device supports this feature.
-            mChannel.setShowBadge(true);
-            nm.createNotificationChannel(mChannel);
-        }
+        NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationChannel mChannel = new NotificationChannel(id1, getString(R.string.channel_name),  //name of the channel
+            NotificationManager.IMPORTANCE_LOW);   //importance level
+        //important level: default is is high on the phone.  high is urgent on the phone.  low is medium, so none is low?
+        // Configure the notification channel.
+        mChannel.setDescription(getString(R.string.channel_description));
+        mChannel.enableLights(true);
+        // Sets the notification light color for notifications posted to this channel, if the device supports this feature.
+        mChannel.setShowBadge(true);
+        nm.createNotificationChannel(mChannel);
     }
 
 }
