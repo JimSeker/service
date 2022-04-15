@@ -84,12 +84,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Min Requirement for this example is API 26+, so no wrapper needed to for channel creation.
+     * Create notificaiton channel required in  API 26+
      */
     private void createChannel() {
 
         NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
         NotificationChannel mChannel = new NotificationChannel(id1,
                 getString(R.string.channel_name),  //name of the channel
                 NotificationManager.IMPORTANCE_LOW);   //importance level

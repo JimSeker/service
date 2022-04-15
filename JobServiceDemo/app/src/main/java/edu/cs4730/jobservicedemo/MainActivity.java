@@ -24,18 +24,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         et_input = (EditText) findViewById(R.id.editText);
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                myJobService.scheduleJob(MainActivity.this, Integer.valueOf(et_input.getText().toString()), false);  //mainActivity context, not listener...
+                myJobService.scheduleJob(MainActivity.this, Integer.parseInt(et_input.getText().toString()), false);  //mainActivity context, not listener...
             }
         });
         findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                myJobService.scheduleJob(MainActivity.this, Integer.valueOf(et_input.getText().toString()), true);  //mainActivity context, not listener...
+                myJobService.scheduleJob(MainActivity.this, Integer.parseInt(et_input.getText().toString()), true);  //mainActivity context, not listener...
             }
         });
         findViewById(R.id.button3).setOnClickListener(new View.OnClickListener() {
@@ -44,6 +43,5 @@ public class MainActivity extends AppCompatActivity {
                 myJobService.cancelJob(MainActivity.this);
             }
         });
-
     }
 }
