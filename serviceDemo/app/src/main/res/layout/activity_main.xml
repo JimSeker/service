@@ -81,15 +81,14 @@
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintTop_creator="1" />
 
-    <TextView
-        android:id="@+id/logger"
+    <ScrollView
+
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Note, if this app goes is minimized, then services will likely be killed in API 27+\nPermissions:\n"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -97,6 +96,14 @@
         app:layout_constraintTop_toBottomOf="@+id/btn_file"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintRight_creator="1"
-        tools:layout_constraintTop_creator="1" />
+        tools:layout_constraintTop_creator="1" >
+
+        <TextView
+            android:id="@+id/logger"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Note, if this app goes is minimized, then services will likely be killed in API 28+\n" />
+    </ScrollView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

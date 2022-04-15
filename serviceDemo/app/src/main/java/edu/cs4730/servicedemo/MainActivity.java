@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     TextView logger;
     String TAG = "MainActivity";
 
-    /*
+    /**
      * The service will call the handler to send back information.
      */
     private Handler handler = new Handler(new Handler.Callback() {
@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         public boolean handleMessage(Message msg) {
             Object path = msg.obj;
             Toast.makeText(getApplicationContext(), path.toString(), Toast.LENGTH_LONG).show();
+            logger.append(path.toString() + "\n");
             return true;
         }
     });
