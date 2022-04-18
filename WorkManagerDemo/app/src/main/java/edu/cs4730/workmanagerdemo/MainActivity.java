@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -22,13 +23,8 @@ import androidx.work.WorkManager;
  * <p>
  * see https://developer.android.com/topic/libraries/architecture/adding-components
  * <p>
- *
- *  NOTE, currently can't be run at API 31.    Error:
- *   java.lang.IllegalArgumentException: edu.cs4730.workmanagerdemo: Targeting S+ (version 31 and above) requires that one of FLAG_IMMUTABLE or FLAG_MUTABLE be specified when creating a PendingIntent.
- *     Strongly consider using FLAG_IMMUTABLE, only use FLAG_MUTABLE if some functionality depends on the PendingIntent being mutable, e.g. if it needs to be used with inline replies or bubbles.
- * except, I have no pendingIntents, so it got to be something in the workmanager libriry.
  */
-
+@SuppressLint("SetTextI18n")
 public class MainActivity extends AppCompatActivity {
 
     TextView tv_oneshot, tv_param;
@@ -78,8 +74,7 @@ public class MainActivity extends AppCompatActivity {
     public void oneshot() {
         //for a schedule once
         OneTimeWorkRequest runWorkA = new OneTimeWorkRequest.Builder(WorkerA.class)
-                .build();
-
+            .build();
         /*
         //for recur schedule, say every 24 hours, comment out above, since duplicate variables.
         PeriodicWorkRequest.Builder workerkBuilder =
@@ -103,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
         //not necessary, but this will tell us the status of the task.
         LiveData<WorkInfo> status = WorkManager.getInstance(getApplicationContext()).getWorkInfoByIdLiveData(runWorkA.getId());
         status.observe(this, new Observer<WorkInfo>() {
+
             @Override
             public void onChanged(@Nullable WorkInfo workStatus) {
                 switch (workStatus.getState()) {
@@ -136,29 +132,29 @@ public class MainActivity extends AppCompatActivity {
     public void param() {
         // Create the Data object:
         final Data myData = new Data.Builder()
-                // We need to pass three integers: X, Y, and Z
-                .putInt(WorkerParameters.KEY_X_ARG, 42)
-                // ... and build the actual Data object:
-                .build();
+            // We need to pass three integers: X, Y, and Z
+            .putInt(WorkerParameters.KEY_X_ARG, 42)
+            // ... and build the actual Data object:
+            .build();
 
         // ...then create and enqueue a OneTimeWorkRequest that uses those arguments
         OneTimeWorkRequest mathWork = new OneTimeWorkRequest.Builder(WorkerParameters.class)
-                .setInputData(myData)
-                .build();
+            .setInputData(myData)
+            .build();
         WorkManager.getInstance(getApplicationContext()).enqueue(mathWork);
 
         //now set the observer to get the result.
         WorkManager.getInstance(getApplicationContext()).getWorkInfoByIdLiveData(mathWork.getId())
-                .observe(this, new Observer<WorkInfo>() {
-                    @Override
-                    public void onChanged(@Nullable WorkInfo status) {
-                        if (status != null && status.getState().isFinished()) {
-                            int myResult = status.getOutputData().getInt(WorkerParameters.KEY_RESULT,
-                                    -1);
-                            tv_param.setText("Result is " + myResult);
-                        }
+            .observe(this, new Observer<WorkInfo>() {
+                @Override
+                public void onChanged(@Nullable WorkInfo status) {
+                    if (status != null && status.getState().isFinished()) {
+                        int myResult = status.getOutputData().getInt(WorkerParameters.KEY_RESULT,
+                            -1);
+                        tv_param.setText("Result is " + myResult);
                     }
-                });
+                }
+            });
     }
 
     //This method changes together WorkerA and B in parallel and then C.
@@ -169,11 +165,11 @@ public class MainActivity extends AppCompatActivity {
         OneTimeWorkRequest runWorkC = new OneTimeWorkRequest.Builder(WorkerC.class).build();
         //now setup them up to run, A and B together.  Once they are complete then launch C.
         WorkManager.getInstance(getApplicationContext())
-                // First, run all the A tasks (in parallel):
-                .beginWith(Arrays.asList(runWorkA, runWorkB))
-                // ...when all A tasks are finished, run the single B task:
-                .then(runWorkC)
-                .enqueue();
+            // First, run all the A tasks (in parallel):
+            .beginWith(Arrays.asList(runWorkA, runWorkB))
+            // ...when all A tasks are finished, run the single B task:
+            .then(runWorkC)
+            .enqueue();
 
 
         // not necessary, but so the display updates get the LiveData for each and set to update the textviews.
