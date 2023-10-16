@@ -1,6 +1,5 @@
 package edu.cs4730.jobservicejobworkitemdemo;
 
-
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -27,6 +26,7 @@ public class MyJobWorkService extends JobService {
 
     /**
      * This is a task to dequeue and process work in the background.
+     * the asynctask is depreciated, so this example needs fixed, but not today.
      */
     final class CommandProcessor extends AsyncTask<Void, Void, Void> {
         private final JobParameters mParams;
@@ -117,7 +117,7 @@ public class MyJobWorkService extends JobService {
                     new Intent(this, MainActivity.class), PendingIntent.FLAG_MUTABLE);
         } else {
             contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, MainActivity.class), 0);
+                new Intent(this, MainActivity.class), 0);  //lint doesn't see the if statement.
         }
 
         // Set the info for the views that show in the notification panel.
