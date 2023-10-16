@@ -71,8 +71,8 @@ public class MyForeGroundService extends Service {
                 Log.d("intentServer", info);
                 //make a toast
                 //unable to ensure the toasts will always show, so use a handler and post it for later.
-                // Toast.makeText(MyForeGroundService.this, info, Toast.LENGTH_SHORT).show();
-                toast(info);
+                 Toast.makeText(MyForeGroundService.this, info, Toast.LENGTH_SHORT).show();
+                //toast(info);
             }
             // Stop the service using the startId, so that we don't stop
             // the service in the middle of handling another job

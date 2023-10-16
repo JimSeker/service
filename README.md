@@ -7,7 +7,7 @@ and to be started in the foreground.  This is required in 26/Oreo+, otherwise us
 
 `FreeFallSrv` is an example of using a service to get sensor data and do things.  The activity only starts and stops the service.
 The code based on the freefall code in the sensor repo.  Note with the background restrictions started in API 27, this app doesn't work as well as 
-it used too.  Likely a JobService or a foreground service maybe the better way to go.
+it used too, you need to leave the app running for it to work.  Likely a JobService or a foreground service maybe the better way to go.
 
 `JobIntentServiceDemo` is an example of a jobIntentService.  The jobIntentService just toasts a number of random numbers as asked for.
   this JobIntentServices can run in the background without an app in 26/Oreo+

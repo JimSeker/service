@@ -47,6 +47,7 @@ public class MyJobIntentService extends JobIntentService {
             try {
                 Thread.sleep(10000);  // 1000 is one second, ten seconds would be 10000
             } catch (InterruptedException e) {
+                e.printStackTrace();  //something broke, just print out the stack trace for it.
             }
         }
     }

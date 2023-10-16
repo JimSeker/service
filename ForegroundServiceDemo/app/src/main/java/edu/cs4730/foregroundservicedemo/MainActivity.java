@@ -20,6 +20,8 @@ import android.view.View;
 
 import java.util.Map;
 
+import edu.cs4730.foregroundservicedemo.databinding.ActivityMainBinding;
+
 /**
  * Main activity doesn't really do much, but start the service and then finish.
  * In oreo to run a background service when the app is not running it must
@@ -33,32 +35,30 @@ public class MainActivity extends AppCompatActivity {
     ActivityResultLauncher<String[]> rpl;
     private final String[] REQUIRED_PERMISSIONS = new String[]{Manifest.permission.POST_NOTIFICATIONS};
     public static String TAG = "MainActivity";
-
+    ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         // for notifications permission now required in api 33
         //this allows us to check with multiple permissions, but in this case (currently) only need 1.
-        rpl = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(),
-            new ActivityResultCallback<Map<String, Boolean>>() {
-                @Override
-                public void onActivityResult(Map<String, Boolean> isGranted) {
-                    boolean granted = true;
-                    for (Map.Entry<String, Boolean> x : isGranted.entrySet()) {
-                        logthis(x.getKey() + " is " + x.getValue());
-                        if (!x.getValue()) granted = false;
-                    }
-                    if (granted)
-                        logthis("Permissions granted for api 33+");
+        rpl = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), new ActivityResultCallback<Map<String, Boolean>>() {
+            @Override
+            public void onActivityResult(Map<String, Boolean> isGranted) {
+                boolean granted = true;
+                for (Map.Entry<String, Boolean> x : isGranted.entrySet()) {
+                    logthis(x.getKey() + " is " + x.getValue());
+                    if (!x.getValue()) granted = false;
                 }
+                if (granted) logthis("Permissions granted for api 33+");
             }
-        );
+        });
 
         //IntentService start with 5 random number toasts
-        findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+        binding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent number5 = new Intent(getBaseContext(), MyForeGroundService.class);
@@ -78,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
                 rpl.launch(REQUIRED_PERMISSIONS);
             }
         }
-
     }
 
     /**
@@ -87,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
     private void createchannel() {
         NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationChannel mChannel = new NotificationChannel(id1, getString(R.string.channel_name),  //name of the channel
-            NotificationManager.IMPORTANCE_LOW);   //importance level
+                NotificationManager.IMPORTANCE_LOW);   //importance level
         //important level: default is is high on the phone.  high is urgent on the phone.  low is medium, so none is low?
         // Configure the notification channel.
         mChannel.setDescription(getString(R.string.channel_description));
@@ -108,7 +107,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void logthis(String msg) {
-
         Log.d(TAG, msg);
     }
 
