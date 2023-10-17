@@ -21,6 +21,8 @@ import android.widget.Toast;
 /**
  * This is a simple IntentSerice, which displays random numbers
  * via a toast or notification
+ *
+ * note the intentService is deprecated and a worker or job should be used instead.
  */
 
 public class myIntentService extends IntentService {

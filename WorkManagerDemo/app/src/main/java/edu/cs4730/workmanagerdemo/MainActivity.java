@@ -17,6 +17,8 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
+import edu.cs4730.workmanagerdemo.databinding.ActivityMainBinding;
+
 /**
  * need a simple worker, parameter worker.  Then chain them together for the last example.  maybe a parallel
  * Make sure you are looking at the logcat as well.  You can see what the workers are doing.
@@ -26,44 +28,35 @@ import androidx.work.WorkManager;
  */
 @SuppressLint("SetTextI18n")
 public class MainActivity extends AppCompatActivity {
-
-    TextView tv_oneshot, tv_param;
-    TextView tv_chaina, tv_chainb, tv_chainc;
+    ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        //textviews for the buttons to show what is going on.
-        tv_oneshot = findViewById(R.id.tv_oneshot);
-        tv_param = findViewById(R.id.tv_param);
-        tv_chaina = findViewById(R.id.tv_chaina);
-        tv_chainb = findViewById(R.id.tv_chainb);
-        tv_chainc = findViewById(R.id.tv_chainc);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         //set the click listeners for the three buttons.
-        findViewById(R.id.btn_oneshot).setOnClickListener(new View.OnClickListener() {
+        binding.btnOneshot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 oneshot();
             }
         });
 
-        findViewById(R.id.btn_param).setOnClickListener(new View.OnClickListener() {
+        binding.btnParam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 param();
             }
         });
 
-        findViewById(R.id.btn_chain).setOnClickListener(new View.OnClickListener() {
+        binding.btnChain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 chain();
             }
         });
-
     }
 
 
@@ -73,8 +66,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void oneshot() {
         //for a schedule once
-        OneTimeWorkRequest runWorkA = new OneTimeWorkRequest.Builder(WorkerA.class)
-            .build();
+        OneTimeWorkRequest runWorkA = new OneTimeWorkRequest.Builder(WorkerA.class).build();
         /*
         //for recur schedule, say every 24 hours, comment out above, since duplicate variables.
         PeriodicWorkRequest.Builder workerkBuilder =
@@ -103,25 +95,25 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(@Nullable WorkInfo workStatus) {
                 switch (workStatus.getState()) {
                     case BLOCKED:
-                        tv_oneshot.setText("Status is Blocked");
+                        binding.tvOneshot.setText("Status is Blocked");
                         break;
                     case CANCELLED:
-                        tv_oneshot.setText("Status is canceled");
+                        binding.tvOneshot.setText("Status is canceled");
                         break;
                     case ENQUEUED:
-                        tv_oneshot.setText("Status is enqueued");
+                        binding.tvOneshot.setText("Status is enqueued");
                         break;
                     case FAILED:
-                        tv_oneshot.setText("Status is failed");
+                        binding.tvOneshot.setText("Status is failed");
                         break;
                     case RUNNING:
-                        tv_oneshot.setText("Status is running");
+                        binding.tvOneshot.setText("Status is running");
                         break;
                     case SUCCEEDED:
-                        tv_oneshot.setText("Status is succeeded");
+                        binding.tvOneshot.setText("Status is succeeded");
                         break;
                     default:
-                        tv_oneshot.setText("Status is unknown");
+                        binding.tvOneshot.setText("Status is unknown");
                 }
 
             }
@@ -132,29 +124,25 @@ public class MainActivity extends AppCompatActivity {
     public void param() {
         // Create the Data object:
         final Data myData = new Data.Builder()
-            // We need to pass three integers: X, Y, and Z
-            .putInt(WorkerParameters.KEY_X_ARG, 42)
-            // ... and build the actual Data object:
-            .build();
+                // We need to pass three integers: X, Y, and Z
+                .putInt(WorkerParameters.KEY_X_ARG, 42)
+                // ... and build the actual Data object:
+                .build();
 
         // ...then create and enqueue a OneTimeWorkRequest that uses those arguments
-        OneTimeWorkRequest mathWork = new OneTimeWorkRequest.Builder(WorkerParameters.class)
-            .setInputData(myData)
-            .build();
+        OneTimeWorkRequest mathWork = new OneTimeWorkRequest.Builder(WorkerParameters.class).setInputData(myData).build();
         WorkManager.getInstance(getApplicationContext()).enqueue(mathWork);
 
         //now set the observer to get the result.
-        WorkManager.getInstance(getApplicationContext()).getWorkInfoByIdLiveData(mathWork.getId())
-            .observe(this, new Observer<WorkInfo>() {
-                @Override
-                public void onChanged(@Nullable WorkInfo status) {
-                    if (status != null && status.getState().isFinished()) {
-                        int myResult = status.getOutputData().getInt(WorkerParameters.KEY_RESULT,
-                            -1);
-                        tv_param.setText("Result is " + myResult);
-                    }
+        WorkManager.getInstance(getApplicationContext()).getWorkInfoByIdLiveData(mathWork.getId()).observe(this, new Observer<WorkInfo>() {
+            @Override
+            public void onChanged(@Nullable WorkInfo status) {
+                if (status != null && status.getState().isFinished()) {
+                    int myResult = status.getOutputData().getInt(WorkerParameters.KEY_RESULT, -1);
+                    binding.tvParam.setText("Result is " + myResult);
                 }
-            });
+            }
+        });
     }
 
     //This method changes together WorkerA and B in parallel and then C.
@@ -165,11 +153,10 @@ public class MainActivity extends AppCompatActivity {
         OneTimeWorkRequest runWorkC = new OneTimeWorkRequest.Builder(WorkerC.class).build();
         //now setup them up to run, A and B together.  Once they are complete then launch C.
         WorkManager.getInstance(getApplicationContext())
-            // First, run all the A tasks (in parallel):
-            .beginWith(Arrays.asList(runWorkA, runWorkB))
-            // ...when all A tasks are finished, run the single B task:
-            .then(runWorkC)
-            .enqueue();
+                // First, run all the A tasks (in parallel):
+                .beginWith(Arrays.asList(runWorkA, runWorkB))
+                // ...when all A tasks are finished, run the single B task:
+                .then(runWorkC).enqueue();
 
 
         // not necessary, but so the display updates get the LiveData for each and set to update the textviews.
@@ -180,25 +167,25 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(@Nullable WorkInfo workStatus) {
                 switch (workStatus.getState()) {
                     case BLOCKED:
-                        tv_chaina.setText("A Status is Blocked");
+                        binding.tvChaina.setText("A Status is Blocked");
                         break;
                     case CANCELLED:
-                        tv_chaina.setText("A Status is canceled");
+                        binding.tvChaina.setText("A Status is canceled");
                         break;
                     case ENQUEUED:
-                        tv_chaina.setText("A Status is enqueued");
+                        binding.tvChaina.setText("A Status is enqueued");
                         break;
                     case FAILED:
-                        tv_chaina.setText("A Status is failed");
+                        binding.tvChaina.setText("A Status is failed");
                         break;
                     case RUNNING:
-                        tv_chaina.setText("A Status is running");
+                        binding.tvChaina.setText("A Status is running");
                         break;
                     case SUCCEEDED:
-                        tv_chaina.setText("A Status is succeeded");
+                        binding.tvChaina.setText("A Status is succeeded");
                         break;
                     default:
-                        tv_chaina.setText("A Status is unknown");
+                        binding.tvChaina.setText("A Status is unknown");
                 }
             }
         });
@@ -209,25 +196,25 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(@Nullable WorkInfo workStatus) {
                 switch (workStatus.getState()) {
                     case BLOCKED:
-                        tv_chainb.setText("B Status is Blocked");
+                        binding.tvChainb.setText("B Status is Blocked");
                         break;
                     case CANCELLED:
-                        tv_chainb.setText("B Status is canceled");
+                        binding.tvChainb.setText("B Status is canceled");
                         break;
                     case ENQUEUED:
-                        tv_chainb.setText("B Status is enqueued");
+                        binding.tvChainb.setText("B Status is enqueued");
                         break;
                     case FAILED:
-                        tv_chainb.setText("B Status is failed");
+                        binding.tvChainb.setText("B Status is failed");
                         break;
                     case RUNNING:
-                        tv_chainb.setText("B Status is running");
+                        binding.tvChainb.setText("B Status is running");
                         break;
                     case SUCCEEDED:
-                        tv_chainb.setText("B Status is succeeded");
+                        binding.tvChainb.setText("B Status is succeeded");
                         break;
                     default:
-                        tv_chainb.setText("B Status is unknown");
+                        binding.tvChainb.setText("B Status is unknown");
                 }
             }
         });
@@ -238,25 +225,25 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(@Nullable WorkInfo workStatus) {
                 switch (workStatus.getState()) {
                     case BLOCKED:
-                        tv_chainc.setText("C Status is Blocked");
+                        binding.tvChainc.setText("C Status is Blocked");
                         break;
                     case CANCELLED:
-                        tv_chainc.setText("C Status is canceled");
+                        binding.tvChainc.setText("C Status is canceled");
                         break;
                     case ENQUEUED:
-                        tv_chainc.setText("C Status is enqueued");
+                        binding.tvChainc.setText("C Status is enqueued");
                         break;
                     case FAILED:
-                        tv_chainc.setText("C Status is failed");
+                        binding.tvChainc.setText("C Status is failed");
                         break;
                     case RUNNING:
-                        tv_chainc.setText("C Status is running");
+                        binding.tvChainc.setText("C Status is running");
                         break;
                     case SUCCEEDED:
-                        tv_chainc.setText("C Status is succeeded");
+                        binding.tvChainc.setText("C Status is succeeded");
                         break;
                     default:
-                        tv_chainc.setText("C Status is unknown");
+                        binding.tvChainc.setText("C Status is unknown");
                 }
             }
         });

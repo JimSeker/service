@@ -14,7 +14,6 @@ import android.os.Message;
 import android.os.Messenger;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Map;
@@ -24,6 +23,8 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+
+import edu.cs4730.servicedemo.databinding.ActivityMainBinding;
 
 /**
  * A simple example of how to call/start services.
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     ActivityResultLauncher<String[]> rpl;
     private final String[] REQUIRED_PERMISSIONS = new String[]{Manifest.permission.POST_NOTIFICATIONS};
 
-    TextView logger;
+    ActivityMainBinding binding;
     String TAG = "MainActivity";
 
     /**
@@ -54,30 +55,26 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        //logger for the permission checking for the file download service.
-        logger = findViewById(R.id.logger);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         // for notifications permission now required in api 33
         //this allows us to check with multiple permissions, but in this case (currently) only need 1.
-        rpl = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(),
-            new ActivityResultCallback<Map<String, Boolean>>() {
-                @Override
-                public void onActivityResult(Map<String, Boolean> isGranted) {
-                    boolean granted = true;
-                    for (Map.Entry<String, Boolean> x : isGranted.entrySet()) {
-                        logthis(x.getKey() + " is " + x.getValue());
-                        if (!x.getValue()) granted = false;
-                    }
-                    if (granted)
-                        logthis("Permissions granted for api 33+");
+        rpl = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), new ActivityResultCallback<Map<String, Boolean>>() {
+            @Override
+            public void onActivityResult(Map<String, Boolean> isGranted) {
+                boolean granted = true;
+                for (Map.Entry<String, Boolean> x : isGranted.entrySet()) {
+                    logthis(x.getKey() + " is " + x.getValue());
+                    if (!x.getValue()) granted = false;
                 }
+                if (granted) logthis("Permissions granted for api 33+");
             }
-        );
+        });
 
 
         //IntentService start with 5 random number toasts
-        findViewById(R.id.btn_istarth).setOnClickListener(new View.OnClickListener() {
+        binding.btnIstarth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent number5 = new Intent(getApplicationContext(), myIntentService.class);
@@ -89,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //IntentService starts and creates 5 notifications with random numbers.
-        findViewById(R.id.btn_istartn).setOnClickListener(new View.OnClickListener() {
+        binding.btnIstartn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent number5 = new Intent(getApplicationContext(), myIntentService.class);
@@ -98,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         //Service start with 5 random number toasts
-        findViewById(R.id.btn_sstarth).setOnClickListener(new View.OnClickListener() {
+        binding.btnSstarth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent number5 = new Intent(getApplicationContext(), myService.class);
@@ -110,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //Service start with 5 random number and sends notifications.
-        findViewById(R.id.btn_sstartn).setOnClickListener(new View.OnClickListener() {
+        binding.btnSstartn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent number5 = new Intent(getApplicationContext(), myService.class);
@@ -134,9 +131,8 @@ public class MainActivity extends AppCompatActivity {
     private void createchannel() {
 
         NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        NotificationChannel mChannel = new NotificationChannel(id,
-            getString(R.string.channel_name),  //name of the channel
-            NotificationManager.IMPORTANCE_DEFAULT);   //importance level
+        NotificationChannel mChannel = new NotificationChannel(id, getString(R.string.channel_name),  //name of the channel
+                NotificationManager.IMPORTANCE_DEFAULT);   //importance level
         //important level: default is is high on the phone.  high is urgent on the phone.  low is medium, so none is low?
         // Configure the notification channel.
         mChannel.setDescription(getString(R.string.channel_description));
@@ -161,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void logthis(String msg) {
-        logger.append(msg + "\n");
+        binding.logger.append(msg + "\n");
         Log.d(TAG, msg);
     }
 

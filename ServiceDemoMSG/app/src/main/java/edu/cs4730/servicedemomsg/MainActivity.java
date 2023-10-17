@@ -14,6 +14,8 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import edu.cs4730.servicedemomsg.databinding.ActivityMainBinding;
+
 /**
  * This is a very simple example of a service and Ibinder (IPC)
  * when the user clicks the button, it triggers the service to say hi via a toast.
@@ -26,13 +28,15 @@ public class MainActivity extends AppCompatActivity {
     Messenger mService;
     boolean mBound = false;
     final String TAG = "MainActivity";
+    ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         //setup the button, so it will call into the service via cause the service to react and say hi.
-        findViewById(R.id.btn_gn).setOnClickListener(new View.OnClickListener() {
+        binding.btnGn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mBound) {
