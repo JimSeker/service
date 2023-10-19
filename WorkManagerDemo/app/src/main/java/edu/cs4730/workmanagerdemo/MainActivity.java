@@ -24,7 +24,7 @@ import edu.cs4730.workmanagerdemo.databinding.ActivityMainBinding;
  * Make sure you are looking at the logcat as well.  You can see what the workers are doing.
  * <p>
  * see https://developer.android.com/topic/libraries/architecture/adding-components
- * <p>
+ * note, no toasts in workers, so POST_NOTIFICATION permission is not needed.
  */
 @SuppressLint("SetTextI18n")
 public class MainActivity extends AppCompatActivity {

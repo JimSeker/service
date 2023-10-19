@@ -1,9 +1,12 @@
 package edu.cs4730.servicedemomsg;
 
+import android.Manifest;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Message;
@@ -12,7 +15,13 @@ import android.os.RemoteException;
 import android.util.Log;
 import android.view.View;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
+import java.util.Map;
 
 import edu.cs4730.servicedemomsg.databinding.ActivityMainBinding;
 
@@ -29,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     boolean mBound = false;
     final String TAG = "MainActivity";
     ActivityMainBinding binding;
+    ActivityResultLauncher<String[]> rpl;
+    private final String[] REQUIRED_PERMISSIONS = new String[]{Manifest.permission.POST_NOTIFICATIONS};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +64,22 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        rpl = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), new ActivityResultCallback<Map<String, Boolean>>() {
+            @Override
+            public void onActivityResult(Map<String, Boolean> isGranted) {
+                boolean granted = true;
+                for (Map.Entry<String, Boolean> x : isGranted.entrySet()) {
+                    logthis(x.getKey() + " is " + x.getValue());
+                    if (!x.getValue()) granted = false;
+                }
+                if (granted) logthis("Permissions granted for api 33+");
+            }
+        });
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (!allPermissionsGranted()) {
+                rpl.launch(REQUIRED_PERMISSIONS);
+            }
+        }
     }
 
     /**
@@ -102,4 +129,17 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    //ask for permissions when we start.
+    private boolean allPermissionsGranted() {
+        for (String permission : REQUIRED_PERMISSIONS) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+        return true;
+    }
+    public void logthis(String msg) {
+        Log.d(TAG, msg);
+    }
 }

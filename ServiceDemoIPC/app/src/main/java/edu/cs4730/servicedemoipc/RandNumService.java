@@ -10,6 +10,7 @@ import android.os.IBinder;
 /**
  * A simple service.   It setups the binder (called LocalBinder), so the activity/fragment
  * can call into the service to get a random number.
+ * there are no toasts in the service, so POST_NOTIFICATIONS is not needed.
  */
 
 public class RandNumService extends Service {
