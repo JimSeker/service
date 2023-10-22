@@ -16,7 +16,7 @@ import androidx.core.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 /**
  * this is an example of a service that prompts itself to a foreground service with a persistent
@@ -30,7 +30,7 @@ public class MyForeGroundService extends Service {
     private ServiceHandler mServiceHandler;
     private final static String TAG = "MyForegroundService";
 
-    Random r;
+    SecureRandom r;
 
     public MyForeGroundService() {
     }
@@ -94,7 +94,7 @@ public class MyForeGroundService extends Service {
 
     @Override
     public void onCreate() {
-        r = new Random();
+        r = new SecureRandom();
         // Start up the thread running the service.  Note that we create a
         // separate thread because the service normally runs in the process's
         // main thread, which we don't want to block.  We also make it

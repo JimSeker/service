@@ -9,7 +9,7 @@ import androidx.core.app.JobIntentService;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 /**
  * This is a simple job to take a number and toast that number of random numbers, one every 10 seconds.
@@ -23,7 +23,7 @@ public class MyJobIntentService extends JobIntentService {
     final String TAG = "MyJobIntenetService";
 
     // Random number generator
-    private final Random mGenerator = new Random();
+    private final SecureRandom mGenerator = new SecureRandom();
 
     /**
      * Convenience method for enqueuing work in to this service.
