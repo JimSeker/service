@@ -1,5 +1,6 @@
 package edu.cs4730.jobservicejobworkitemdemo;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -109,6 +110,7 @@ public class MyJobWorkService extends JobService {
     /**
      * Show a notification while this service is running.
      */
+    @SuppressLint("UnspecifiedImmutableFlag")
     private void showNotification(String text) {
         // The PendingIntent to launch our activity if the user selects this notification
         PendingIntent contentIntent = null;

@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "edu.cs4730.freefallsrv"
-        minSdkVersion 28
-        targetSdk 34
+        minSdkVersion 29
+        targetSdk 35
         versionCode 1
         versionName "1.0"
     }

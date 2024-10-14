@@ -13,6 +13,8 @@ import java.util.Random;
 
 /**
  * This is a simple job to take a number and toast that number of random numbers, one every 10 seconds.
+ *
+ * and deprecated, google appears to be pushing everyone to a WorkManager or maybe a forground service.
  */
 public class MyJobIntentService extends JobIntentService {
 
