@@ -1,5 +1,8 @@
 package edu.cs4730.workmanagerdemo;
 
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.annotation.Nullable;
@@ -35,7 +38,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main, (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return WindowInsetsCompat.CONSUMED;
+        });
         //set the click listeners for the three buttons.
         binding.btnOneshot.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,10 +131,10 @@ public class MainActivity extends AppCompatActivity {
     public void param() {
         // Create the Data object:
         final Data myData = new Data.Builder()
-                // We need to pass three integers: X, Y, and Z
-                .putInt(WorkerParameters.KEY_X_ARG, 42)
-                // ... and build the actual Data object:
-                .build();
+            // We need to pass three integers: X, Y, and Z
+            .putInt(WorkerParameters.KEY_X_ARG, 42)
+            // ... and build the actual Data object:
+            .build();
 
         // ...then create and enqueue a OneTimeWorkRequest that uses those arguments
         OneTimeWorkRequest mathWork = new OneTimeWorkRequest.Builder(WorkerParameters.class).setInputData(myData).build();
@@ -153,10 +160,10 @@ public class MainActivity extends AppCompatActivity {
         OneTimeWorkRequest runWorkC = new OneTimeWorkRequest.Builder(WorkerC.class).build();
         //now setup them up to run, A and B together.  Once they are complete then launch C.
         WorkManager.getInstance(getApplicationContext())
-                // First, run all the A tasks (in parallel):
-                .beginWith(Arrays.asList(runWorkA, runWorkB))
-                // ...when all A tasks are finished, run the single B task:
-                .then(runWorkC).enqueue();
+            // First, run all the A tasks (in parallel):
+            .beginWith(Arrays.asList(runWorkA, runWorkB))
+            // ...when all A tasks are finished, run the single B task:
+            .then(runWorkC).enqueue();
 
 
         // not necessary, but so the display updates get the LiveData for each and set to update the textviews.
