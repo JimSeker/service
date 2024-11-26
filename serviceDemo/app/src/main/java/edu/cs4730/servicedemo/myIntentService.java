@@ -1,6 +1,6 @@
 package edu.cs4730.servicedemo;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 import android.app.Activity;
 import android.app.IntentService;
@@ -31,19 +31,19 @@ public class myIntentService extends IntentService {
      * A constructor is required, and must call the super IntentService(String)
      * constructor with a name for the worker thread.
      */
-    Random r;
+    SecureRandom r;
     int NotID = 1;
     NotificationManager nm;
 
     public myIntentService() {
         super("number5");  //or whatever name you want to give it.
-        r = new Random();
+        r = new SecureRandom();
         //showToast("b Intent Service started");
     }
 
     public myIntentService(String name) {
         super(name);  //or whatever name you want to give it.
-        r = new Random();
+        r = new SecureRandom();
         //showToast("Intent Service started");
     }
 

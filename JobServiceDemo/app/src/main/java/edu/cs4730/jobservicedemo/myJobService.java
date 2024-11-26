@@ -10,13 +10,13 @@ import android.os.PersistableBundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 public class myJobService extends JobService {
 
     private static final String TAG = "myJobService";
     // Random number generator
-    private final Random mGenerator = new Random();
+    private final SecureRandom mGenerator = new SecureRandom();
 
     public myJobService() {
     }

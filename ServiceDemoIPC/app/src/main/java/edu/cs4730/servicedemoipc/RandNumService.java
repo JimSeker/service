@@ -1,6 +1,6 @@
 package edu.cs4730.servicedemoipc;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 import android.app.Service;
 import android.content.Intent;
@@ -18,7 +18,7 @@ public class RandNumService extends Service {
     // Binder given to clients
     private final IBinder mBinder = new LocalBinder();
     // Random number generator
-    private final Random mGenerator = new Random();
+    private final SecureRandom mGenerator = new SecureRandom();
 
     /**
      * Class used for the client Binder.  Because we know this service always
