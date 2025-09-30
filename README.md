@@ -10,12 +10,12 @@ The code based on the freefall code in the sensor repo.  Note with the backgroun
 it used too, you need to leave the app running for it to work.  Likely a JobService or a foreground service maybe the better way to go.
 
 `JobIntentServiceDemo` is an example of a jobIntentService.  The jobIntentService just toasts a number of random numbers as asked for.
-  this JobIntentServices can run in the background without an app in 26/Oreo+   JobIntentService is also deprecated, says to use workmanager.
+  this JobIntentServices can run in the background without an app in 26/Oreo+   JobIntentService is also deprecated, says to use workmanager or foreground service.
 
 `JobServiceDemo` is an example of a jobService.  The jobIntentService just toasts a number of random numbers as asked for.
 Shows how to schedule a one off (with a recurring if you want) and a recurring one that survives reboot as well.
 
-`JobServiceJobWorkItemDemo` is JobService, but instead of scheduling, it uses the new enqueue and dequeue methods.  Note: This is a API 26/Oreo+ example.
+`JobServiceJobWorkItemDemo` is JobService, but instead of scheduling, it uses the new enqueue and dequeue methods.
 
 `ServiceDemo` is a example of how to call Services, both IntentService and a Service.  for the DownloadService see [DownloadDemo](https://github.com/JimSeker/networking)   IntentService is deprecated, in favor of WorkManager.
 
