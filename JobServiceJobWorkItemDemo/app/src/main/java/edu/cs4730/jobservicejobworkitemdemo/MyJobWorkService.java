@@ -1,6 +1,6 @@
 package edu.cs4730.jobservicejobworkitemdemo;
 
-import android.annotation.SuppressLint;
+
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -8,7 +8,6 @@ import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.app.job.JobWorkItem;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -16,28 +15,27 @@ import android.widget.Toast;
  * This is basically a google example (except like most google examples it didn't work) with
  * all the necessary corrections to work correctly.  The org code comes from:
  * https://developer.android.com/reference/android/app/job/JobParameters.html#dequeueWork()
- *
  */
 
 public class MyJobWorkService extends JobService {
     public MyJobWorkService() {
     }
+
     private NotificationManager mNM;
-    private CommandProcessor mCurProcessor;
+    private CommandProcessor2 mCurProcessor;
 
     /**
      * This is a task to dequeue and process work in the background.
-     * the asynctask is depreciated, so this example needs fixed, but not today.
+     * It runs until the job is stopped or there is no more work.
      */
-    final class CommandProcessor extends AsyncTask<Void, Void, Void> {
+    final class CommandProcessor2 extends Thread {
         private final JobParameters mParams;
 
-        CommandProcessor(JobParameters params) {
+        CommandProcessor2(JobParameters params) {
             mParams = params;
         }
 
-        @Override
-        protected Void doInBackground(Void... params) {
+        public void run() {
             boolean cancelled;
             JobWorkItem work;
 
@@ -46,7 +44,7 @@ public class MyJobWorkService extends JobService {
              * job's work queue is empty and the job has stopped, so we can let this
              * async task complete.
              */
-            while (!(cancelled=isCancelled()) && (work=mParams.dequeueWork()) != null) {
+            while (!(cancelled = isInterrupted()) && (work = mParams.dequeueWork()) != null) {
                 String txt = work.getIntent().getStringExtra("Key1");
                 Log.i("JobWorkService", "Processing work: " + work + ", msg: " + txt);
                 showNotification(txt);
@@ -55,6 +53,7 @@ public class MyJobWorkService extends JobService {
                 try {
                     Thread.sleep(5000);
                 } catch (InterruptedException e) {
+                    Log.e("JobWorkService", "Interrupted in sleep!");
                 }
 
                 hideNotification();
@@ -68,13 +67,13 @@ public class MyJobWorkService extends JobService {
                 Log.i("JobWorkService", "CANCELLED!");
             }
 
-            return null;
         }
     }
 
+
     @Override
     public void onCreate() {
-        mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        mNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         Log.i("JobWorkService", "Service Created");
         Toast.makeText(this, "Service Created", Toast.LENGTH_SHORT).show();
     }
@@ -89,8 +88,9 @@ public class MyJobWorkService extends JobService {
     @Override
     public boolean onStartJob(JobParameters params) {
         // Start task to pull work out of the queue and process it.
-        mCurProcessor = new CommandProcessor(params);
-        mCurProcessor.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        mCurProcessor = new CommandProcessor2(params);
+        mCurProcessor.start();
+        //mCurProcessor.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         // Allow the job to continue running while we process work.
         return true;
@@ -99,7 +99,8 @@ public class MyJobWorkService extends JobService {
     @Override
     public boolean onStopJob(JobParameters params) {
         // Have the processor cancel its current work.
-        mCurProcessor.cancel(true);
+        //mCurProcessor.Stop(); is deprecated, so we use interrupt instead.
+        mCurProcessor.interrupt();
 
         // Tell the system to reschedule the job -- the only reason we would be here is
         // because the job needs to stop for some reason before it has completed all of
@@ -110,27 +111,20 @@ public class MyJobWorkService extends JobService {
     /**
      * Show a notification while this service is running.
      */
-    @SuppressLint("UnspecifiedImmutableFlag")
     private void showNotification(String text) {
         // The PendingIntent to launch our activity if the user selects this notification
-        PendingIntent contentIntent = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
-            contentIntent = PendingIntent.getActivity(this, 0,
-                    new Intent(this, MainActivity.class), PendingIntent.FLAG_MUTABLE);
-        } else {
-            contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, MainActivity.class), 0);  //lint doesn't see the if statement.
-        }
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+            new Intent(this, MainActivity.class), PendingIntent.FLAG_MUTABLE);
 
         // Set the info for the views that show in the notification panel.
         Notification.Builder noteBuilder = new Notification.Builder(this, MainActivity.id1)
-                .setSmallIcon(R.drawable.stat_sample)  // the status icon
-                .setTicker(text)  // the status text
-                .setWhen(System.currentTimeMillis())  // the time stamp
-                .setContentTitle("Job service is running.")  // the label
-                .setContentText(text)  // the contents of the entry
-                .setChannelId(MainActivity.id1)
-                .setContentIntent(contentIntent);  // The intent to send when the entry is clicked
+            .setSmallIcon(R.drawable.stat_sample)  // the status icon
+            .setTicker(text)  // the status text
+            .setWhen(System.currentTimeMillis())  // the time stamp
+            .setContentTitle("Job service is running.")  // the label
+            .setContentText(text)  // the contents of the entry
+            .setChannelId(MainActivity.id1)
+            .setContentIntent(contentIntent);  // The intent to send when the entry is clicked
 
         // We show this for as long as our service is processing a command.
         noteBuilder.setOngoing(true);
