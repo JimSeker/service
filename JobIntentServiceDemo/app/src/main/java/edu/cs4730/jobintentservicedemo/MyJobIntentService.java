@@ -6,6 +6,7 @@ import android.os.Handler;
 
 import androidx.core.app.JobIntentService;
 
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -13,7 +14,7 @@ import java.util.Random;
 
 /**
  * This is a simple job to take a number and toast that number of random numbers, one every 10 seconds.
- *
+ * <p>
  * and deprecated, google appears to be pushing everyone to a WorkManager or maybe a forground service.
  */
 public class MyJobIntentService extends JobIntentService {
@@ -26,6 +27,7 @@ public class MyJobIntentService extends JobIntentService {
 
     // Random number generator
     private final Random mGenerator = new Random();
+
 
     /**
      * Convenience method for enqueuing work in to this service.
@@ -44,7 +46,7 @@ public class MyJobIntentService extends JobIntentService {
 
         for (int i = 0; i < top; i++) {
             num = mGenerator.nextInt(100);
-            toast(i+ " Random number is " + num);
+            toast(i + " Random number is " + num);
             Log.wtf(TAG, i + " Random number is " + num);
             try {
                 Thread.sleep(10000);  // 1000 is one second, ten seconds would be 10000
@@ -61,11 +63,9 @@ public class MyJobIntentService extends JobIntentService {
         toast("All work complete");
     }
 
-    final Handler mHandler = new Handler();
-
     // Helper for showing tests
     void toast(final CharSequence text) {
-        mHandler.post(new Runnable() {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
                 Toast.makeText(MyJobIntentService.this, text, Toast.LENGTH_SHORT).show();

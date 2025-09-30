@@ -1,50 +1,38 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdk 35
+    compileSdk = 36
     defaultConfig {
-        applicationId "edu.cs4730.workmanagerdemo"
-        minSdkVersion 29
-        targetSdk 35
-        versionCode 1
-        versionName "1.0"
+        applicationId = "edu.cs4730.workmanagerdemo"
+        minSdk = 31
+        targetSdk = 36
+        versionCode = 1
+        versionName = "1.0"
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled = false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     buildFeatures {
         viewBinding = true
     }
-    namespace 'edu.cs4730.workmanagerdemo'
+    namespace = 'edu.cs4730.workmanagerdemo'
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.7.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.2.0'
-    implementation "androidx.lifecycle:lifecycle-viewmodel:2.8.7"
-    implementation "androidx.lifecycle:lifecycle-livedata:2.8.7"
-    implementation("com.google.android.material:material:1.12.0")
+    implementation 'androidx.appcompat:appcompat:1.7.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
+    implementation "androidx.lifecycle:lifecycle-viewmodel:2.9.4"
+    implementation "androidx.lifecycle:lifecycle-livedata:2.9.4"
+    implementation("com.google.android.material:material:1.13.0")
 
     //Work Manager
-    implementation 'androidx.work:work-runtime:2.10.0'
-
-    //really dumb, needed to stop a duplicate dependency, even though not use kotlin at all, hopefully at some point won't need it.
-    //but with android view model, doesn't seem to have the same problem.  really weird.  leaving the commented out line just in case.
-//    constraints {
-//        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0") {
-//            because("kotlin-stdlib-jdk7 is now a part of kotlin-stdlib")
-//        }
-//        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.0") {
-//            because("kotlin-stdlib-jdk8 is now a part of kotlin-stdlib")
-//        }
-//    }
-
+    implementation 'androidx.work:work-runtime:2.10.5'
 }

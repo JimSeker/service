@@ -80,7 +80,7 @@ public class MyForeGroundService extends Service {
         }
     }
 
-    final Handler mHandler = new Handler();
+    final Handler mHandler = new Handler(Looper.getMainLooper());
 
     // Helper for showing tests
     void toast(final CharSequence text) {

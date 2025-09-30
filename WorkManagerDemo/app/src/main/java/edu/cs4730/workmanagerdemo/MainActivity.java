@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
 
 import java.util.Arrays;
 

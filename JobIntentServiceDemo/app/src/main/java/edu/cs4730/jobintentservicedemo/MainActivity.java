@@ -13,6 +13,7 @@ import edu.cs4730.jobintentservicedemo.databinding.ActivityMainBinding;
 
 /**
  * All this example does is take in a number and start up the jobIntent service to complete the work.
+ * Also deprecated, google appears to be pushing everyone to a WorkManager or maybe a forground service.
  */
 
 public class MainActivity extends AppCompatActivity {

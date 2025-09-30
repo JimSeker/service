@@ -2,11 +2,9 @@ package edu.cs4730.servicedemo;
 
 import java.util.Random;
 
-import android.app.Activity;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,13 +14,13 @@ import android.os.Messenger;
 import androidx.core.app.NotificationCompat;
 
 import android.util.Log;
-import android.widget.Toast;
 
 /**
  * This is a simple IntentService, which displays random numbers
  * via a toast or notification
- *
- * note the intentService is deprecated and a worker or job should be used instead.
+ * <p>
+ * note the intentService is deprecated and a worker should be used instead
+ * jobIntent is also deprecated.
  */
 
 public class myIntentService extends IntentService {

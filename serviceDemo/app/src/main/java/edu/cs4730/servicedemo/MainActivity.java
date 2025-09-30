@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.os.Messenger;
 import android.util.Log;
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * The service will call the handler to send back information.
      */
-    private Handler handler = new Handler(new Handler.Callback() {
+    private final Handler handler = new Handler(Looper.getMainLooper(), new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
             Object path = msg.obj;
