@@ -1,6 +1,6 @@
 package edu.cs4730.servicedemo;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -24,7 +24,7 @@ public class myService1 extends Service {
 	  private ServiceHandler mServiceHandler;
 
 	  //my variables
-		Random r;
+		SecureRandom r;
 		int NotID =1;
 		NotificationManager nm;
 	  // Handler that receives messages from the thread
@@ -77,7 +77,7 @@ public class myService1 extends Service {
 
 	  @Override
 	  public void onCreate() {
-			r = new Random();
+			r = new SecureRandom();
 	    // Start up the thread running the service.  Note that we create a
 	    // separate thread because the service normally runs in the process's
 	    // main thread, which we don't want to block.  We also make it

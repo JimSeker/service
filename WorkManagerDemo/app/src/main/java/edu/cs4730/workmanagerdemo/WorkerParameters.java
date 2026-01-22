@@ -3,7 +3,7 @@ package edu.cs4730.workmanagerdemo;
 import android.content.Context;
 import androidx.annotation.NonNull;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 import androidx.work.Data;
 import androidx.work.Worker;
@@ -21,7 +21,7 @@ public class WorkerParameters extends Worker {
     // ...and the result key:
     public static final String KEY_RESULT = "result";
 
-    Random r;
+    SecureRandom r;
 
     public WorkerParameters(@NonNull Context context, @NonNull androidx.work.WorkerParameters workerParams) {
         super(context, workerParams);
@@ -32,7 +32,7 @@ public class WorkerParameters extends Worker {
     public Result doWork() {
 
         //we are pretending this is some complex work to be done.   instead of a random number.
-        r = new Random();
+        r = new SecureRandom();
         // Fetch the arguments (and specify default values):
         int x = getInputData().getInt(KEY_X_ARG, 0);
 
