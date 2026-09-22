@@ -1,6 +1,7 @@
 package edu.cs4730.servicedemomsg;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     final String TAG = "MainActivity";
     ActivityMainBinding binding;
     ActivityResultLauncher<String[]> rpl;
+    @SuppressLint("InlinedApi")  //handled farther down.
     private final String[] REQUIRED_PERMISSIONS = new String[]{Manifest.permission.POST_NOTIFICATIONS};
 
     @Override
